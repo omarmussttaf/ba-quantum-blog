@@ -1,0 +1,18 @@
+div {
+    background-color: #000000;
+    background-image: url("../images/BA.svg");;
+    background-size: 200px;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+.title{
+
+    color: #B11226;
+    font-size: 40
+}
+
+.bio{
+    color: #ffffff;
+    font-size: 35
+}
