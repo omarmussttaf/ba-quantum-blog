@@ -1,0 +1,206 @@
+/* =========================================================
+   BA PROJECT
+   File: base.css
+
+   Purpose:
+   Global foundation shared by every BA page.
+
+   Contains:
+   - Reset
+   - Design tokens
+   - Global typography
+   - RTL / LTR font handling
+   - Global container
+   - Media normalization
+   - Accessibility focus states
+   - Disabled states
+   - Prototype / disabled-link behavior
+   - Section anchor offset
+   - Selection
+   - Scrollbar
+   - Reduced motion support
+
+   Important:
+   Page-specific styles do NOT belong here.
+========================================================= */
+
+
+/* =========================
+   RESET
+========================= */
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    background: #050505;
+
+    color: #ffffff;
+
+    font-family: "Cairo", sans-serif;
+
+    line-height: 1.6;
+
+}
+
+
+html[dir="ltr"] body {
+
+    font-family: "Montserrat", sans-serif;
+
+}
+
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+
+}
+
+
+button {
+
+    font-family: inherit;
+
+}
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+:root {
+
+    --black: #050505;
+
+    --black-light: #0b0b0b;
+
+    --white: #ffffff;
+
+    --gray: #9d9d9d;
+
+    --border: #252525;
+
+    --red: #b11226;
+
+    --red-light: #d91c35;
+
+}
+
+
+/* =========================
+   GLOBAL CONTAINER
+========================= */
+
+.container {
+
+    width: min(1200px, 90%);
+
+    margin-inline: auto;
+
+}
+
+/* =========================
+   GLOBAL FINAL IMPROVEMENTS
+========================= */
+
+section[id] {
+    scroll-margin-top: 95px;
+}
+
+::selection {
+    background: var(--red);
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #272727;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--red);
+}
+
+/* =========================
+   GLOBAL HARDENING
+========================= */
+
+body {
+    overflow-x: hidden;
+}
+
+img,
+svg {
+    max-width: 100%;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--red-light);
+    outline-offset: 3px;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+    cursor: not-allowed;
+}
+
+[data-prototype="true"],
+[aria-disabled="true"] {
+    cursor: not-allowed;
+}
+
+a[data-prototype="true"],
+a[aria-disabled="true"] {
+    opacity: 0.58;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+}

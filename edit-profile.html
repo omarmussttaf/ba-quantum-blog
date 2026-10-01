@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- =====================================================
+         BA PROJECT
+         File: edit-profile.html
+
+         Purpose:
+         Allows the authenticated BA user to edit
+         their scientific profile.
+
+         Handles:
+         - Avatar
+         - Full name
+         - Account type
+         - Scientific field
+         - Institution
+         - Country / City
+         - ORCID
+         - Website
+         - Scientific interests
+         - Bio
+
+         Security Notes:
+         - This is a private authenticated page.
+         - edit-profile.js verifies the current session.
+         - Supabase RLS must enforce database authorization.
+         - Storage RLS must protect avatar uploads.
+         - HTML validation improves UX only.
+         - No secret API keys belong in this file.
+    ====================================================== -->
+
+
+    <!-- =========================
+         BASIC META
+    ========================= -->
+
+    <meta charset="UTF-8">
+
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <!-- Private account page -->
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+
+    <title>
+        BA | تعديل الملف العلمي
+    </title>
+
+
+
+    <!-- =========================
+         FONTS
+    ========================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- =========================
+     BA STYLES
+========================= -->
+
+
+
+
+
+
+    <!-- BA STYLES -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/auth.css">
+    <link rel="stylesheet" href="./css/edit-profile.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="profile-page-header">
+
+
+        <div class="container profile-page-nav">
+
+
+            <a
+                href="./index.html"
+                class="logo"
+                aria-label="BA Home"
+            >
+
+                <img
+                    src="./images/logo.svg"
+                    alt="BA"
+                >
+
+            </a>
+
+
+
+            <div class="profile-nav-actions">
+
+
+                <button
+                    class="language-button"
+                    id="languageButton"
+                    type="button"
+                    aria-label="Switch to English"
+                >
+                    EN
+                </button>
+
+
+                <a
+                    href="./profile.html"
+                    class="edit-back-button"
+
+                    data-ar="العودة إلى الملف"
+                    data-en="Back to Profile"
+                >
+                    العودة إلى الملف
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =====================================================
+         EDIT PROFILE PAGE
+    ====================================================== -->
+
+    <main class="edit-profile-page">
+
+
+        <div class="container edit-profile-container">
+
+
+
+            <!-- =========================
+                 PAGE HEADING
+            ========================= -->
+
+            <div class="edit-profile-heading">
+
+
+                <span
+                    class="section-label"
+
+                    data-ar="الملف العلمي"
+                    data-en="Scientific Profile"
+                >
+                    الملف العلمي
+                </span>
+
+
+                <h1
+                    data-ar="تعديل معلوماتك"
+                    data-en="Edit Your Information"
+                >
+                    تعديل معلوماتك
+                </h1>
+
+
+                <p
+                    data-ar="حدّث معلوماتك العلمية والمهنية لتظهر بشكل أفضل داخل مجتمع BA."
+                    data-en="Update your scientific and professional information to build a stronger presence across BA."
+                >
+                    حدّث معلوماتك العلمية والمهنية
+                    لتظهر بشكل أفضل داخل مجتمع BA.
+                </p>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 EDIT PROFILE FORM
+            ================================================== -->
+
+            <form
+                class="edit-profile-form"
+                id="editProfileForm"
+                autocomplete="on"
+            >
+
+
+
+                <!-- =========================
+                     MAIN FORM GRID
+                ========================= -->
+
+                <div class="edit-form-grid">
+
+
+
+                    <!-- =========================
+                         AVATAR
+                    ========================= -->
+
+                    <div class="profile-image-editor">
+
+
+                        <div class="profile-image-preview">
+
+
+                            <img
+                                id="avatarPreview"
+                                alt="Profile avatar preview"
+                            >
+
+
+                            <div
+                                class="profile-image-placeholder"
+                                id="avatarPlaceholder"
+                                aria-hidden="true"
+                            >
+                                BA
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="profile-image-actions">
+
+
+                            <button
+                                type="button"
+                                class="avatar-upload-button"
+                                id="avatarChooseButton"
+
+                                data-ar="اختر صورة"
+                                data-en="Choose Image"
+                            >
+                                اختر صورة
+                            </button>
+
+
+
+                            <!--
+                                SECURITY / UX:
+
+                                accept helps users choose the
+                                expected image types.
+
+                                edit-profile.js performs additional
+                                MIME and size validation.
+
+                                Storage policies remain authoritative.
+                            -->
+
+                            <input
+                                type="file"
+                                id="avatarInput"
+
+                                accept="image/jpeg,image/png,image/webp"
+
+                                hidden
+                            >
+
+
+
+                            <span
+                                data-ar="JPG أو PNG أو WebP — بحد أقصى 5 MB"
+                                data-en="JPG, PNG or WebP — Maximum 5 MB"
+                            >
+                                JPG أو PNG أو WebP — بحد أقصى 5 MB
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         FULL NAME
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editFullName"
+
+                            data-ar="الاسم الكامل"
+                            data-en="Full Name"
+                        >
+                            الاسم الكامل
+                        </label>
+
+
+                        <input
+                            type="text"
+
+                            id="editFullName"
+                            name="fullName"
+
+                            required
+
+                            minlength="2"
+                            maxlength="120"
+
+                            autocomplete="name"
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         ACCOUNT TYPE
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editAccountType"
+
+                            data-ar="نوع الحساب"
+                            data-en="Account Type"
+                        >
+                            نوع الحساب
+                        </label>
+
+
+                        <select
+                            id="editAccountType"
+                            name="accountType"
+                            required
+                        >
+
+
+                            <option
+                                value="student"
+
+                                data-ar="طالب"
+                                data-en="Student"
+                            >
+                                طالب
+                            </option>
+
+
+                            <option
+                                value="researcher"
+
+                                data-ar="باحث"
+                                data-en="Researcher"
+                            >
+                                باحث
+                            </option>
+
+
+                            <option
+                                value="professor"
+
+                                data-ar="أستاذ"
+                                data-en="Professor"
+                            >
+                                أستاذ
+                            </option>
+
+
+                            <option
+                                value="engineer"
+
+                                data-ar="مهندس"
+                                data-en="Engineer"
+                            >
+                                مهندس
+                            </option>
+
+
+                            <option
+                                value="professional"
+
+                                data-ar="متخصص"
+                                data-en="Professional"
+                            >
+                                متخصص
+                            </option>
+
+
+                            <option
+                                value="science-enthusiast"
+
+                                data-ar="مهتم بالعلم"
+                                data-en="Science Enthusiast"
+                            >
+                                مهتم بالعلم
+                            </option>
+
+
+                        </select>
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         SCIENTIFIC FIELD
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editScientificField"
+
+                            data-ar="المجال العلمي"
+                            data-en="Scientific Field"
+                        >
+                            المجال العلمي
+                        </label>
+
+
+                        <input
+                            type="text"
+
+                            id="editScientificField"
+                            name="scientificField"
+
+                            maxlength="120"
+
+                            autocomplete="off"
+
+                            placeholder="Physics"
+
+                            data-placeholder-ar="مثال: الفيزياء"
+                            data-placeholder-en="Example: Physics"
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         INSTITUTION
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editInstitution"
+
+                            data-ar="الجامعة أو المؤسسة"
+                            data-en="University or Institution"
+                        >
+                            الجامعة أو المؤسسة
+                        </label>
+
+
+                        <input
+                            type="text"
+
+                            id="editInstitution"
+                            name="institution"
+
+                            maxlength="160"
+
+                            autocomplete="organization"
+
+                            data-placeholder-ar="مثال: جامعة بغداد"
+                            data-placeholder-en="Example: University of Baghdad"
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         COUNTRY
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editCountry"
+
+                            data-ar="الدولة"
+                            data-en="Country"
+                        >
+                            الدولة
+                        </label>
+
+
+                        <input
+                            type="text"
+
+                            id="editCountry"
+                            name="country"
+
+                            maxlength="100"
+
+                            autocomplete="country-name"
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         CITY
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editCity"
+
+                            data-ar="المدينة"
+                            data-en="City"
+                        >
+                            المدينة
+                        </label>
+
+
+                        <input
+                            type="text"
+
+                            id="editCity"
+                            name="city"
+
+                            maxlength="100"
+
+                            autocomplete="address-level2"
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         ORCID
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editOrcid"
+
+                            data-ar="ORCID"
+                            data-en="ORCID"
+                        >
+                            ORCID
+                        </label>
+
+
+                        <input
+                            type="text"
+
+                            id="editOrcid"
+                            name="orcid"
+
+                            maxlength="19"
+
+                            autocomplete="off"
+
+                            placeholder="0000-0000-0000-0000"
+
+                            inputmode="text"
+                        >
+
+
+                        <small
+                            class="form-help"
+
+                            data-ar="مثال: 0000-0002-1825-0097"
+                            data-en="Example: 0000-0002-1825-0097"
+                        >
+                            مثال: 0000-0002-1825-0097
+                        </small>
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         WEBSITE
+                    ========================= -->
+
+                    <div class="form-group">
+
+
+                        <label
+                            for="editWebsite"
+
+                            data-ar="الموقع الشخصي"
+                            data-en="Website"
+                        >
+                            الموقع الشخصي
+                        </label>
+
+
+                        <input
+                            type="url"
+
+                            id="editWebsite"
+                            name="website"
+
+                            maxlength="500"
+
+                            autocomplete="url"
+
+                            inputmode="url"
+
+                            spellcheck="false"
+
+                            placeholder="https://example.com"
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     SCIENTIFIC INTERESTS
+                ================================================== -->
+
+                <div class="form-group interests-group">
+
+
+                    <label
+                        for="interestInput"
+
+                        data-ar="الاهتمامات العلمية"
+                        data-en="Scientific Interests"
+                    >
+                        الاهتمامات العلمية
+                    </label>
+
+
+
+                    <div class="interest-input-row">
+
+
+                        <input
+                            type="text"
+
+                            id="interestInput"
+
+                            maxlength="80"
+
+                            autocomplete="off"
+
+                            data-placeholder-ar="مثال: الحوسبة الكمية"
+                            data-placeholder-en="Example: Quantum Computing"
+                        >
+
+
+                        <button
+                            type="button"
+
+                            id="addInterestButton"
+
+                            class="add-interest-button"
+
+                            data-ar="إضافة"
+                            data-en="Add"
+                        >
+                            إضافة
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!--
+                        edit-profile.js safely renders tags
+                        using DOM APIs and textContent.
+                    -->
+
+                    <div
+                        class="interests-list"
+                        id="interestsList"
+                        aria-live="polite"
+                    >
+                    </div>
+
+
+
+                    <span
+                        class="interest-help"
+
+                        data-ar="أضف المجالات التي تهتم بها أو تعمل عليها. الحد الأقصى 20 اهتمامًا."
+                        data-en="Add scientific fields you are interested in or work on. Maximum 20 interests."
+                    >
+                        أضف المجالات التي تهتم بها أو تعمل عليها.
+                        الحد الأقصى 20 اهتمامًا.
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BIO
+                ================================================== -->
+
+                <div class="form-group edit-bio-group">
+
+
+                    <label
+                        for="editBio"
+
+                        data-ar="نبذة عنك"
+                        data-en="Bio"
+                    >
+                        نبذة عنك
+                    </label>
+
+
+                    <textarea
+                        id="editBio"
+                        name="bio"
+
+                        rows="6"
+
+                        maxlength="2000"
+
+                        data-placeholder-ar="اكتب نبذة قصيرة عن اهتماماتك العلمية وأعمالك..."
+                        data-placeholder-en="Write a short bio about your scientific interests and work..."
+                    ></textarea>
+
+
+                    <small
+                        class="form-help"
+
+                        data-ar="الحد الأقصى 2000 حرف."
+                        data-en="Maximum 2000 characters."
+                    >
+                        الحد الأقصى 2000 حرف.
+                    </small>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     STATUS MESSAGE
+                ================================================== -->
+
+                <div
+                    class="edit-profile-message"
+                    id="editProfileMessage"
+
+                    role="status"
+                    aria-live="polite"
+                >
+                </div>
+
+
+
+                <!-- =================================================
+                     FORM ACTIONS
+                ================================================== -->
+
+                <div class="edit-profile-actions">
+
+
+                    <button
+                        type="submit"
+
+                        class="auth-submit"
+
+                        id="saveProfileButton"
+
+                        data-ar="حفظ التغييرات"
+                        data-en="Save Changes"
+                    >
+                        حفظ التغييرات
+                    </button>
+
+
+
+                    <a
+                        href="./profile.html"
+
+                        class="btn btn-secondary"
+
+                        data-ar="إلغاء"
+                        data-en="Cancel"
+                    >
+                        إلغاء
+                    </a>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+
+         Loading order:
+
+         1. Supabase official SDK
+         2. BA Supabase client
+         3. Edit profile logic
+    ====================================================== -->
+
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/edit-profile.js"
+    ></script>
+
+
+</body>
+
+</html>

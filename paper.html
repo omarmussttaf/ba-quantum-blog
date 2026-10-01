@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- =====================================================
+         BA PROJECT
+         File: paper.html
+
+         Purpose:
+         Displays detailed information about one scientific work.
+
+         Data Source:
+         OpenAlex API
+
+         Security Notes:
+         - No private API keys belong here.
+         - All API content is rendered as plain text.
+         - External links are validated before being activated.
+    ====================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+    <title>
+        BA | تفاصيل البحث
+    </title>
+
+
+    <!-- =========================
+         FONTS
+    ========================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+  <!-- =========================
+     BA STYLES
+========================= -->
+
+
+
+
+
+    <!-- BA STYLES -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/paper.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="research-page-header">
+
+        <div class="container research-page-nav">
+
+            <a
+                href="./index.html"
+                class="logo"
+                aria-label="BA Home"
+            >
+                <img
+                    src="./images/logo.svg"
+                    alt="BA"
+                >
+            </a>
+
+
+            <div class="research-nav-actions">
+
+                <a
+                    href="./research.html"
+                    class="research-home-link"
+                    data-ar="العودة للبحث"
+                    data-en="Back to Research"
+                >
+                    العودة للبحث
+                </a>
+
+
+                <a
+                    href="./profile.html"
+                    class="research-profile-link"
+                    data-ar="ملفي العلمي"
+                    data-en="My Profile"
+                >
+                    ملفي العلمي
+                </a>
+
+
+                <button
+                    type="button"
+                    class="language-button"
+                    id="languageButton"
+                    aria-label="Switch to English"
+                >
+                    EN
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PAPER PAGE
+    ====================================================== -->
+
+    <main class="paper-detail-page">
+
+        <div class="container paper-detail-container">
+
+
+            <!-- =========================
+                 STATUS
+            ========================= -->
+
+            <div
+                class="paper-detail-status"
+                id="paperDetailStatus"
+                role="status"
+                aria-live="polite"
+            >
+            </div>
+
+
+
+            <!-- =========================
+                 PAPER CONTENT
+            ========================= -->
+
+            <article
+                class="paper-detail-card"
+                id="paperDetailCard"
+                hidden
+            >
+
+
+                <!-- =========================
+                     TOP META
+                ========================= -->
+
+                <div class="paper-detail-top">
+
+                    <span
+                        class="paper-detail-type"
+                        data-ar="ورقة علمية"
+                        data-en="Scientific Paper"
+                    >
+                        ورقة علمية
+                    </span>
+
+
+                    <span id="paperYear">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <!-- =========================
+                     TITLE
+                ========================= -->
+
+                <h1 id="paperTitle">
+                    -
+                </h1>
+
+
+
+                <!-- =========================
+                     AUTHORS
+                ========================= -->
+
+                <p
+                    class="paper-detail-authors"
+                    id="paperAuthors"
+                >
+                    -
+                </p>
+
+
+
+                <!-- =========================
+                     SOURCE
+                ========================= -->
+
+                <p
+                    class="paper-detail-source"
+                    id="paperSource"
+                >
+                    -
+                </p>
+
+
+
+                <!-- =========================
+                     METADATA
+                ========================= -->
+
+                <div class="paper-detail-meta">
+
+                    <div>
+                        <span
+                            data-ar="الاستشهادات"
+                            data-en="Citations"
+                        >
+                            الاستشهادات
+                        </span>
+
+                        <strong id="paperCitations">
+                            0
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span
+                            data-ar="الوصول"
+                            data-en="Access"
+                        >
+                            الوصول
+                        </span>
+
+                        <strong id="paperOpenAccess">
+                            -
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>
+                            DOI
+                        </span>
+
+                        <strong id="paperDoi">
+                            -
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>
+                            OpenAlex ID
+                        </span>
+
+                        <strong id="paperOpenAlexId">
+                            -
+                        </strong>
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     ABSTRACT
+                ========================= -->
+
+                <section class="paper-detail-section">
+
+                    <span
+                        class="section-label"
+                        data-ar="الملخص"
+                        data-en="Abstract"
+                    >
+                        الملخص
+                    </span>
+
+
+                    <p id="paperAbstract">
+                        -
+                    </p>
+
+                </section>
+
+
+
+                <!-- =========================
+                     TOPICS
+                ========================= -->
+
+                <section class="paper-detail-section">
+
+                    <span
+                        class="section-label"
+                        data-ar="الموضوعات"
+                        data-en="Topics"
+                    >
+                        الموضوعات
+                    </span>
+
+
+                    <div
+                        class="paper-topics"
+                        id="paperTopics"
+                    >
+                    </div>
+
+                </section>
+
+
+
+                <!-- =========================
+                     ACTIONS
+                ========================= -->
+
+                <div class="paper-detail-actions">
+
+
+                    <a
+                        id="paperSourceLink"
+                        class="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+
+                        data-ar="فتح المصدر"
+                        data-en="Open Source"
+                    >
+                        فتح المصدر
+                    </a>
+
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        id="savePaperButton"
+
+                        data-ar="حفظ الورقة"
+                        data-en="Save Paper"
+                    >
+                        حفظ الورقة
+                    </button>
+
+
+                </div>
+
+
+            </article>
+
+
+        </div>
+
+    </main>
+
+
+
+  <!-- =====================================================
+     JAVASCRIPT
+
+     Loading order:
+     1. Supabase official SDK
+     2. BA Supabase client
+     3. Paper page logic
+====================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"
+></script>
+
+<script
+    src="./js/supabase.js"
+></script>
+
+<script
+    src="./js/paper.js"
+></script>
+
+</body>
+
+</html>

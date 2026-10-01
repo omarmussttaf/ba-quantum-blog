@@ -1,0 +1,452 @@
+/* =========================================================
+   BA PROJECT
+   File: edit-profile.css
+
+   Purpose:
+   Edit scientific profile page.
+
+   Used by:
+   - edit-profile.html
+
+   Depends on:
+   - base.css
+   - components.css
+   - auth.css
+   - profile.css (for the shared profile page header)
+
+   Contains:
+   - Edit profile page layout
+   - Edit form
+   - Avatar uploader
+   - Scientific interests editor
+   - Save / cancel actions
+   - Status messages
+
+   Audit status:
+   - Rebuilt from the original style.css edit-profile rules.
+   - Profile display-only rules are intentionally excluded.
+   - Final source overrides relevant to this page are preserved.
+========================================================= */
+
+
+/* =========================
+   EDIT PROFILE
+========================= */
+
+.edit-back-button {
+    min-height: 42px;
+
+    padding-inline: 16px;
+
+    display: inline-flex;
+    align-items: center;
+
+    border: 1px solid #303030;
+    border-radius: 8px;
+
+    color: #aaa;
+
+    font-size: 12px;
+
+    transition: 0.2s;
+}
+
+
+.edit-back-button:hover {
+    color: white;
+    border-color: var(--red);
+}
+
+
+.edit-profile-page {
+    min-height: 100vh;
+
+    padding:
+        70px 0
+        110px;
+
+    background: #050505;
+}
+
+
+.edit-profile-container {
+    max-width: 950px;
+}
+
+
+.edit-profile-heading {
+    margin-bottom: 40px;
+}
+
+
+.edit-profile-heading h1 {
+    margin-bottom: 12px;
+
+    font-size: clamp(
+        42px,
+        5vw,
+        60px
+    );
+}
+
+
+.edit-profile-heading p {
+    max-width: 680px;
+
+    color: #888;
+
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+
+.edit-profile-form {
+    padding: 30px;
+
+    border: 1px solid #262626;
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0e0e0e,
+            #080808
+        );
+}
+
+
+.edit-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+.edit-profile-form textarea {
+    width: 100%;
+
+    padding: 15px;
+
+    resize: vertical;
+
+    border: 1px solid #292929;
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #0b0b0b;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    line-height: 1.8;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.edit-profile-form textarea:focus {
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(177, 18, 38, 0.09);
+}
+
+
+.edit-bio-group {
+    margin-top: 20px;
+}
+
+
+.edit-profile-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 28px;
+}
+
+
+.edit-profile-actions .auth-submit {
+    width: auto;
+
+    min-width: 180px;
+
+    padding-inline: 26px;
+
+    margin-top: 0;
+}
+
+
+.edit-profile-message {
+    min-height: 20px;
+
+    margin-top: 18px;
+
+    font-size: 12px;
+}
+
+
+.edit-profile-message.success {
+    color: #7cc68d;
+}
+
+
+.edit-profile-message.error {
+    color: #ef6678;
+}
+
+
+@media (max-width: 700px) {
+
+    .edit-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .edit-profile-form {
+        padding: 20px;
+    }
+
+
+    .edit-profile-actions {
+        flex-direction: column;
+    }
+
+
+    .edit-profile-actions .auth-submit,
+    .edit-profile-actions .btn {
+        width: 100%;
+    }
+
+}
+
+/* =========================
+   AVATAR UPLOAD BUTTON
+========================= */
+
+.avatar-upload-button {
+    width: fit-content;
+
+    padding: 10px 16px;
+
+    border: 1px solid #333;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #ccc;
+
+    font-family: inherit;
+    font-size: 12px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.avatar-upload-button:hover {
+    border-color: var(--red);
+    color: white;
+}
+
+.profile-image-editor {
+    display: flex;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 28px;
+}
+
+
+.profile-image-preview {
+    width: 100px;
+    height: 100px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border: 1px solid #333;
+    border-radius: 50%;
+
+    background: #151515;
+}
+
+
+.profile-image-preview img {
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    object-fit: cover;
+}
+
+
+.profile-image-placeholder {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    place-items: center;
+
+    color: white;
+
+    font-weight: 700;
+}
+
+
+.profile-image-actions {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.profile-image-actions span {
+    color: #666;
+
+    font-size: 10px;
+}
+
+/* =========================
+   SCIENTIFIC INTERESTS
+========================= */
+
+.interests-group {
+    margin-top: 20px;
+}
+
+
+.interest-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+
+.interest-input-row input {
+    flex: 1;
+}
+
+
+.add-interest-button {
+    min-width: 85px;
+
+    border: 1px solid #333;
+    border-radius: 8px;
+
+    background: #111;
+
+    color: white;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.add-interest-button:hover {
+    border-color: var(--red);
+}
+
+
+.interests-list {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+
+.interest-tag {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 10px;
+
+    border: 1px solid #303030;
+    border-radius: 20px;
+
+    background: #0d0d0d;
+
+    color: #bbb;
+
+    font-size: 11px;
+}
+
+
+.interest-tag button {
+    border: 0;
+
+    background: transparent;
+
+    color: var(--red-light);
+
+    cursor: pointer;
+
+    font-size: 15px;
+}
+
+
+.interest-help {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #666;
+
+    font-size: 10px;
+}
+
+
+@media (max-width: 600px) {
+
+    .interest-input-row {
+        flex-direction: column;
+    }
+
+
+    .add-interest-button {
+        min-height: 44px;
+    }
+
+}
+
+/* =========================
+   FINAL SOURCE OVERRIDES
+========================= */
+
+.form-help {
+    display: block;
+    margin-top: 7px;
+    color: #737373;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.user-profile-avatar img,
+.profile-image-preview img {
+    object-position: center;
+}

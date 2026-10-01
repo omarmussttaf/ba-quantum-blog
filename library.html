@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- =====================================================
+         BA PROJECT
+         File: library.html
+
+         Purpose:
+         Private scientific library for the authenticated user.
+
+         Displays:
+         - Saved scientific papers
+         - Search inside saved papers
+         - Filter by Open Access
+         - Sort saved research
+
+         Security Notes:
+         - This is a private authenticated page.
+         - library.js verifies the current Supabase user.
+         - Supabase RLS is the real authorization layer.
+         - User/API content is rendered with textContent.
+    ====================================================== -->
+
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+
+    <title>
+        BA | المكتبة العلمية
+    </title>
+
+
+    <!-- =========================
+         FONTS
+    ========================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- =========================
+     BA STYLES
+========================= -->
+
+
+
+
+
+    <!-- BA STYLES -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/library.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="research-page-header">
+
+        <div class="container research-page-nav">
+
+
+            <a
+                href="./index.html"
+                class="logo"
+                aria-label="BA Home"
+            >
+
+                <img
+                    src="./images/logo.svg"
+                    alt="BA"
+                >
+
+            </a>
+
+
+            <div class="research-nav-actions">
+
+
+                <a
+                    href="./research.html"
+                    class="research-home-link"
+                    data-ar="استكشف الأبحاث"
+                    data-en="Explore Research"
+                >
+                    استكشف الأبحاث
+                </a>
+
+
+                <a
+                    href="./profile.html"
+                    class="research-profile-link"
+                    data-ar="ملفي العلمي"
+                    data-en="My Profile"
+                >
+                    ملفي العلمي
+                </a>
+
+
+                <button
+                    type="button"
+                    class="language-button"
+                    id="languageButton"
+                    aria-label="Switch language"
+                >
+                    EN
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         SCIENTIFIC LIBRARY
+    ====================================================== -->
+
+    <main class="library-page">
+
+        <div class="container library-container">
+
+
+            <!-- =========================
+                 INTRO
+            ========================= -->
+
+            <section class="library-intro">
+
+
+                <span
+                    class="section-label"
+                    data-ar="BA Library"
+                    data-en="BA Library"
+                >
+                    BA Library
+                </span>
+
+
+                <h1
+                    data-ar="مكتبتي العلمية"
+                    data-en="My Scientific Library"
+                >
+                    مكتبتي العلمية
+                </h1>
+
+
+                <p
+                    data-ar="كل الأبحاث التي حفظتها في BA، في مكان واحد."
+                    data-en="All the research you saved in BA, in one place."
+                >
+                    كل الأبحاث التي حفظتها في BA، في مكان واحد.
+                </p>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 CONTROLS
+            ========================= -->
+
+            <section class="library-controls">
+
+
+                <!-- SEARCH -->
+
+                <div class="library-search-group">
+
+                    <label
+                        for="librarySearchInput"
+                        data-ar="البحث داخل المكتبة"
+                        data-en="Search your library"
+                    >
+                        البحث داخل المكتبة
+                    </label>
+
+
+                    <input
+                        type="search"
+                        id="librarySearchInput"
+
+                        maxlength="300"
+
+                        autocomplete="off"
+
+                        data-placeholder-ar="ابحث بالعنوان أو المؤلف أو المصدر..."
+                        data-placeholder-en="Search by title, author, or source..."
+
+                        placeholder="ابحث بالعنوان أو المؤلف أو المصدر..."
+                    >
+
+                </div>
+
+
+
+                <!-- FILTER -->
+
+                <div class="library-filter-group">
+
+                    <label
+                        for="libraryAccessFilter"
+                        data-ar="الوصول"
+                        data-en="Access"
+                    >
+                        الوصول
+                    </label>
+
+
+                    <select id="libraryAccessFilter">
+
+                        <option
+                            value="all"
+                            data-ar="الكل"
+                            data-en="All"
+                        >
+                            الكل
+                        </option>
+
+
+                        <option
+                            value="open"
+                            data-ar="وصول مفتوح"
+                            data-en="Open Access"
+                        >
+                            وصول مفتوح
+                        </option>
+
+
+                        <option
+                            value="restricted"
+                            data-ar="وصول محدود"
+                            data-en="Restricted"
+                        >
+                            وصول محدود
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- SORT -->
+
+                <div class="library-sort-group">
+
+                    <label
+                        for="librarySortSelect"
+                        data-ar="الترتيب"
+                        data-en="Sort"
+                    >
+                        الترتيب
+                    </label>
+
+
+                    <select id="librarySortSelect">
+
+                        <option
+                            value="saved-desc"
+                            data-ar="الأحدث حفظًا"
+                            data-en="Recently Saved"
+                        >
+                            الأحدث حفظًا
+                        </option>
+
+
+                        <option
+                            value="saved-asc"
+                            data-ar="الأقدم حفظًا"
+                            data-en="Oldest Saved"
+                        >
+                            الأقدم حفظًا
+                        </option>
+
+
+                        <option
+                            value="citations-desc"
+                            data-ar="الأكثر استشهادًا"
+                            data-en="Most Cited"
+                        >
+                            الأكثر استشهادًا
+                        </option>
+
+
+                        <option
+                            value="year-desc"
+                            data-ar="الأحدث نشرًا"
+                            data-en="Newest Publication"
+                        >
+                            الأحدث نشرًا
+                        </option>
+
+
+                        <option
+                            value="year-asc"
+                            data-ar="الأقدم نشرًا"
+                            data-en="Oldest Publication"
+                        >
+                            الأقدم نشرًا
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 RESULT SUMMARY
+            ========================= -->
+
+            <section class="library-summary">
+
+                <p
+                    id="libraryResultCount"
+                    aria-live="polite"
+                >
+                </p>
+
+            </section>
+
+
+
+            <!-- =========================
+                 STATUS
+            ========================= -->
+
+            <div
+                id="libraryStatus"
+                class="library-status"
+                role="status"
+                aria-live="polite"
+            >
+            </div>
+
+
+
+            <!-- =========================
+                 SAVED PAPERS
+            ========================= -->
+
+            <section
+                id="libraryPapersList"
+                class="library-papers-list"
+                aria-label="Saved Papers"
+            >
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/library.js"
+    ></script>
+
+
+</body>
+
+</html>

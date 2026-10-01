@@ -1,0 +1,564 @@
+/* =========================================================
+   BA PROJECT
+   File: components.css
+
+   Purpose:
+   Reusable UI components shared across multiple BA pages.
+
+   Contains:
+   - Main site header / navigation
+   - Logo
+   - Header actions
+   - Language / menu buttons
+   - Join button
+   - Generic buttons
+   - Global section helpers
+   - Header login link
+   - Shared private-profile header shell
+   - Shared research header shell
+   - Shared responsive navigation behavior
+
+   Important:
+   Page-specific layouts do NOT belong here.
+
+   Final dependency-audit note:
+   The profile and research header shells are shared by more than one page,
+   so they live here instead of forcing pages to load another page's stylesheet.
+========================================================= */
+
+
+/* =========================
+   HEADER
+========================= */
+
+.site-header {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    right: 0;
+
+    z-index: 1000;
+
+    background: rgba(5, 5, 5, 0.82);
+
+    backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+}
+
+
+.navbar {
+
+    min-height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 28px;
+
+}
+
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+
+.logo img {
+    display: block;
+
+    width: 58px;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+.nav-links {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+}
+
+
+.nav-links a {
+
+    position: relative;
+
+    font-size: 14px;
+
+    color: #c8c8c8;
+
+    transition: 0.25s;
+
+}
+
+
+.nav-links a:hover,
+.nav-links a.active {
+
+    color: white;
+
+}
+
+
+.nav-links a::after {
+
+    content: "";
+
+    position: absolute;
+
+    bottom: -10px;
+
+    inset-inline-start: 0;
+
+    width: 0;
+
+    height: 2px;
+
+    background: var(--red);
+
+    transition: 0.25s;
+
+}
+
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+
+    width: 100%;
+
+}
+
+
+.header-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.language-button,
+.menu-button {
+
+    min-width: 42px;
+
+    height: 42px;
+
+    border: 1px solid #2c2c2c;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: white;
+
+    cursor: pointer;
+
+}
+
+
+.join-button {
+
+    min-height: 42px;
+
+    padding-inline: 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: var(--red);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.25s;
+
+}
+
+
+.join-button:hover {
+
+    background: var(--red-light);
+
+}
+
+
+.menu-button {
+
+    display: none;
+
+}
+
+/* =========================
+   FINAL HEADER BEHAVIOR
+========================= */
+
+.site-header {
+    transition:
+        background 0.3s,
+        border-color 0.3s,
+        box-shadow 0.3s;
+}
+
+.site-header.scrolled {
+    background: rgba(3, 3, 3, 0.96);
+
+    border-bottom-color: #202020;
+
+    box-shadow:
+        0 8px 30px
+        rgba(0, 0, 0, 0.28);
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+/* =========================
+   GENERIC BUTTONS
+========================= */
+
+.btn {
+
+    min-height: 54px;
+
+    padding-inline: 28px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-weight: 600;
+
+    transition: 0.25s;
+
+}
+
+.btn-primary {
+
+    background: var(--red);
+
+}
+
+.btn-primary:hover {
+
+    background: var(--red-light);
+
+    transform: translateY(-2px);
+
+}
+
+.btn-secondary {
+
+    border: 1px solid #404040;
+
+    background: rgba(255, 255, 255, 0.02);
+
+}
+
+.btn-secondary:hover {
+
+    border-color: white;
+
+}
+
+/* =========================
+   GLOBAL SECTION
+========================= */
+
+.section {
+
+    padding: 110px 0;
+
+}
+
+
+.section-label {
+
+    display: inline-block;
+
+    margin-bottom: 14px;
+
+    color: var(--red-light);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+}
+
+
+.section-header {
+
+    margin-bottom: 45px;
+
+}
+
+
+.section-header h2 {
+
+    max-width: 760px;
+
+    font-size: clamp(
+        38px,
+        5vw,
+        58px
+    );
+
+    line-height: 1.25;
+
+}
+
+
+
+/* =========================
+   LTR SMALL ADJUSTMENTS
+========================= */
+
+html[dir="ltr"] .section-label {
+
+    letter-spacing: 0.5px;
+
+}
+
+
+/* =========================
+   SHARED MOBILE SECTIONS
+========================= */
+
+@media (max-width: 600px) {
+
+    .section {
+
+        padding: 80px 0;
+
+    }
+
+}
+
+/* =========================
+   HEADER LOGIN
+========================= */
+
+.login-link {
+    padding-inline: 8px;
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+
+.login-link:hover {
+    color: white;
+}
+
+
+@media (max-width: 768px) {
+
+    .login-link {
+        display: none;
+    }
+
+}
+
+/* =========================
+   SHARED PROFILE HEADER
+========================= */
+
+.profile-page-header {
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
+
+    background:
+        rgba(5, 5, 5, 0.94);
+
+    backdrop-filter: blur(16px);
+
+    border-bottom:
+        1px solid #1f1f1f;
+}
+
+
+.profile-page-nav {
+    min-height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.profile-nav-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+/* =========================
+   RESEARCH HEADER
+========================= */
+
+.research-page-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background:
+        rgba(5, 5, 5, 0.92);
+
+    backdrop-filter:
+        blur(18px);
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+
+.research-page-nav {
+    min-height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+.research-nav-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.research-home-link,
+.research-profile-link {
+    color: #a9a9a9;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+
+.research-home-link:hover,
+.research-profile-link:hover {
+    color: white;
+}
+
+/* =========================
+   SHARED MOBILE NAVIGATION
+========================= */
+
+@media (max-width: 768px) {
+
+    .nav-links {
+
+        position: absolute;
+
+        top: 76px;
+
+        inset-inline: 0;
+
+        display: none;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 0;
+
+        padding: 18px 5%;
+
+        background: #080808;
+
+        border-bottom: 1px solid #242424;
+
+    }
+
+
+    .nav-links.open {
+
+        display: flex;
+
+    }
+
+
+    .nav-links a {
+
+        padding: 13px 0;
+
+    }
+
+
+    .nav-links a::after {
+
+        display: none;
+
+    }
+
+
+    .join-button {
+
+        display: none;
+
+    }
+
+
+    .menu-button {
+
+        display: inline-block;
+
+    }
+
+
+    .btn {
+
+        width: 100%;
+
+    }
+
+}

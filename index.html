@@ -1,35 +1,3275 @@
-<html>
-    <!-- ( head ) information about the page-->
-        <head>
-            <!-- charecter set (UTF-8)to soppurt more languages-->
-            <meta charset="UTF-8" />
-            <title>BA</title>
-            <meta name="description" content="BA Quantum - Learn quantum physics, computing and future technologies" />
-            <!--(style)we can write inside it the CSS language (internel style)-->
-            <style></style>
-            <!--(script) is to write javascript language(external style)-->
-            <script></script>
-            <!--(link)to connect the html file with other files-->
-            <link rel="stylesheet" href="css/ba.css" />
-        </head>
-        <!--(body) the things that i want to show to the user-->
-    <body>
-        <div>
-        <p class="title"> BA quantum , welcome</p>
-        <p class="bio">see beyond what happens</p>
-        <p>empty</p>
-         <p>empty</p>
-          <p>empty</p>
-           <p>empty</p>
-            <p>empty</p>
-             <p>empty</p>
-              <p>empty</p>
-               <p>empty</p>
-                <p>empty</p>
-                 <p>empty</p>
-                  <p>empty</p>
-                   <p>empty</p>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- =====================================================
+         BA PROJECT
+         File: index.html
+
+         Purpose:
+         Public landing page for the BA platform.
+
+         Current Status:
+         - Public marketing / product overview page
+         - Arabic and English interface
+         - Navigation to Signup and Login
+         - Several product sections are visual prototypes only
+
+         Security Notes:
+         - No authentication logic or secret keys belong here.
+         - Do not place private API keys in this page.
+         - Prototype actions must not be mistaken for implemented features.
+         - User-generated content is not rendered on this page yet.
+    ====================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BA | العلم والبحث</title>
+
+    <meta
+        name="description"
+        content="BA - منصة للعلم، البحث والباحثين"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0a0a0a"
+    >
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <!-- Arabic Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- English Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- =========================
+     BA STYLES
+========================= -->
+
+
+
+
+    <!-- BA STYLES -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/home.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="site-header">
+
+        <div class="container navbar">
+
+            <a
+    href="#home"
+    class="logo"
+    aria-label="BA Home"
+>
+    <img
+        src="./images/logo.svg"
+        alt="BA"
+    >
+</a>
+
+
+            <nav class="nav-links" id="navLinks" aria-label="Primary navigation">
+
+    <a
+        href="#home"
+        class="active"
+        data-ar="الرئيسية"
+        data-en="Home"
+    >
+        الرئيسية
+    </a>
+
+    <a
+        href="./research.html"
+        data-ar="البحث"
+        data-en="Research"
+    >
+        البحث
+    </a>
+
+    <a
+        href="#researchers"
+        data-ar="الباحثون"
+        data-en="Researchers"
+    >
+        الباحثون
+    </a>
+
+    <a
+        href="#articles"
+        data-ar="المحتوى"
+        data-en="Content"
+    >
+        المحتوى
+    </a>
+
+    <a
+        href="#about"
+        data-ar="عن BA"
+        data-en="About"
+    >
+        عن BA
+    </a>
+
+</nav>
+
+
+            <div class="header-actions">
+
+                <button
+                    class="language-button"
+                    id="languageButton"
+                    type="button"
+                    aria-label="Switch to English"
+                >
+                    EN
+                </button>
+
+                <a
+                    href="./login.html"
+                    class="login-link"
+                    data-ar="تسجيل الدخول"
+                    data-en="Sign In"
+                >
+                 تسجيل الدخول
+                </a>
+
+                <a
+                    href="./signup.html"
+                    class="join-button"
+                    data-ar="انضم إلى BA"
+                    data-en="Join BA"
+                >
+                    انضم إلى BA
+                </a>
+
+
+                <button
+                    class="menu-button"
+                    id="menuButton"
+                    type="button"
+                    aria-label="Menu"
+                    aria-controls="navLinks"
+                    aria-expanded="false"
+                >
+                    ☰
+                </button>
+
+            </div>
+
         </div>
-    </body>    
-   
+
+    </header>
+
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section
+        class="hero"
+        id="home"
+    >
+
+        <div class="hero-background" aria-hidden="true"></div>
+
+
+        <div class="container hero-layout">
+
+
+            <div class="hero-copy">
+
+
+                <span
+                    class="hero-kicker"
+                    data-ar="علم • بحث • مجتمع"
+                    data-en="Science • Research • Community"
+                >
+                    علم • بحث • مجتمع
+                </span>
+
+
+                <h1>
+
+                    <span
+                        data-ar="منصة للعلم،"
+                        data-en="A Platform for Science,"
+                    >
+                        منصة للعلم،
+                    </span>
+
+                    <br>
+
+                    <span
+                        class="hero-accent"
+                        data-ar="البحث والباحثين"
+                        data-en="Research & Researchers"
+                    >
+                        البحث والباحثين
+                    </span>
+
+                </h1>
+
+
+                <p
+                    class="hero-description"
+                    data-ar="ابحث في المعرفة العلمية، افهم الأبحاث باستخدام الذكاء الاصطناعي، وشارك أعمالك داخل مجتمع علمي واحد."
+                    data-en="Search scientific knowledge, understand research with AI, and share your work within one scientific community."
+                >
+                    ابحث في المعرفة العلمية،
+                    افهم الأبحاث باستخدام الذكاء الاصطناعي،
+                    وشارك أعمالك داخل مجتمع علمي واحد.
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="./signup.html"
+                        class="btn btn-primary"
+                        data-ar="انضم إلى BA"
+                        data-en="Join BA"
+                    >
+                        انضم إلى BA
+                    </a>
+
+
+                    <a
+                        href="./research.html"
+                        class="btn btn-secondary"
+                        data-ar="استكشف الأبحاث"
+                        data-en="Explore Research"
+                    >
+                        استكشف الأبحاث
+                    </a>
+
+                </div>
+
+
+                <div class="hero-points">
+
+                    <span
+                        data-ar="أبحاث موثوقة"
+                        data-en="Trusted Research"
+                    >
+                        أبحاث موثوقة
+                    </span>
+
+
+                    <span
+                        data-ar="تلخيص ذكي"
+                        data-en="Smart Summaries"
+                    >
+                        تلخيص ذكي
+                    </span>
+
+
+                    <span
+                        data-ar="ترجمة علمية"
+                        data-en="Scientific Translation"
+                    >
+                        ترجمة علمية
+                    </span>
+
+
+                    <span
+                        data-ar="ملف علمي شخصي"
+                        data-en="Scientific Profile"
+                    >
+                        ملف علمي شخصي
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HERO DEMO PANEL -->
+
+            <div class="hero-panel">
+
+
+                <div class="panel-top">
+
+                    <span>
+                        BA Research
+                    </span>
+
+                    <span class="live-dot">
+                        AI
+                    </span>
+
+                </div>
+
+
+                <div class="search-box">
+
+                    <span
+                        class="search-label"
+                        data-ar="ماذا تريد أن تبحث؟"
+                        data-en="What would you like to research?"
+                    >
+                        ماذا تريد أن تبحث؟
+                    </span>
+
+
+                    <div
+                        class="search-input"
+                        data-ar="ابحث عن بحث، موضوع، أو باحث..."
+                        data-en="Search for a paper, topic, or researcher..."
+                    >
+                        ابحث عن بحث، موضوع، أو باحث...
+                    </div>
+
+                </div>
+
+
+                <div class="research-example">
+
+                    <span
+                        class="example-title"
+                        data-ar="مثال"
+                        data-en="Example"
+                    >
+                        مثال
+                    </span>
+
+
+                    <p
+                        data-ar="أحدث الأبحاث حول الذكاء الاصطناعي في اكتشاف الأدوية"
+                        data-en="Latest research on artificial intelligence in drug discovery"
+                    >
+                        أحدث الأبحاث حول الذكاء الاصطناعي
+                        في اكتشاف الأدوية
+                    </p>
+
+                </div>
+
+
+                <div class="panel-results">
+
+
+                    <div class="result-card">
+
+                        <span class="result-type">
+                            Paper
+                        </span>
+
+                        <strong>
+                            AI-assisted drug discovery
+                        </strong>
+
+                        <span>
+                            2026 • Review
+                        </span>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span class="result-type">
+                            Summary
+                        </span>
+
+                        <strong
+                            data-ar="أهم النتائج"
+                            data-en="Key Findings"
+                        >
+                            أهم النتائج
+                        </strong>
+
+                        <span
+                            data-ar="مصادر موثوقة + تلخيص"
+                            data-en="Trusted sources + summary"
+                        >
+                            مصادر موثوقة + تلخيص
+                        </span>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span class="result-type">
+                            Researcher
+                        </span>
+
+                        <strong
+                            data-ar="اكتشف باحثين في نفس المجال"
+                            data-en="Discover researchers in the same field"
+                        >
+                            اكتشف باحثين في نفس المجال
+                        </strong>
+
+                        <span>
+                            Profiles • Publications
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+<!-- =========================
+     CAPABILITIES
+========================== -->
+
+<section class="section capabilities" id="explore">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div>
+
+                <span
+                    class="section-label"
+                    data-ar="ماذا تستطيع أن تفعل؟"
+                    data-en="What can you do?"
+                >
+                    ماذا تستطيع أن تفعل؟
+                </span>
+
+                <h2
+                    data-ar="كل ما تحتاجه للبحث العلمي في مكان واحد"
+                    data-en="Everything you need for scientific research in one place"
+                >
+                    كل ما تحتاجه للبحث العلمي في مكان واحد
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="capabilities-grid">
+
+
+            <!-- 01 -->
+
+            <article class="capability-card">
+
+                <span class="capability-number">
+                    01
+                </span>
+
+                <h3
+                    data-ar="ابحث في الأبحاث"
+                    data-en="Search Research"
+                >
+                    ابحث في الأبحاث
+                </h3>
+
+                <p
+                    data-ar="ابحث عن أوراق علمية ومواضيع وباحثين واحصل على مصادر واضحة وموثوقة."
+                    data-en="Search scientific papers, topics, and researchers with clear and reliable sources."
+                >
+                    ابحث عن أوراق علمية ومواضيع وباحثين واحصل على مصادر واضحة وموثوقة.
+                </p>
+
+                <a
+                    href="#research-ai"
+                    data-ar="ابدأ البحث ←"
+                    data-en="Start Searching →"
+                >
+                    ابدأ البحث ←
+                </a>
+
+            </article>
+
+
+            <!-- 02 -->
+
+            <article class="capability-card">
+
+                <span class="capability-number">
+                    02
+                </span>
+
+                <h3
+                    data-ar="لخّص وافهم أي ورقة"
+                    data-en="Summarize & Understand Papers"
+                >
+                    لخّص وافهم أي ورقة
+                </h3>
+
+                <p
+                    data-ar="ارفع بحثًا أو افتح ورقة علمية واحصل على الملخص، أهم النتائج، المنهجية والقيود."
+                    data-en="Upload or open a scientific paper and understand its summary, findings, methodology, and limitations."
+                >
+                    ارفع بحثًا أو افتح ورقة علمية واحصل على الملخص، أهم النتائج، المنهجية والقيود.
+                </p>
+
+                <a
+                    href="#paper-intelligence"
+                    data-ar="افهم بحثًا ←"
+                    data-en="Understand a Paper →"
+                >
+                    افهم بحثًا ←
+                </a>
+
+            </article>
+
+
+            <!-- 03 -->
+
+            <article class="capability-card">
+
+                <span class="capability-number">
+                    03
+                </span>
+
+                <h3
+                    data-ar="اكتشف الباحثين"
+                    data-en="Discover Researchers"
+                >
+                    اكتشف الباحثين
+                </h3>
+
+                <p
+                    data-ar="اكتشف الباحثين والأساتذة والمتخصصين وتعرّف على منشوراتهم واهتماماتهم العلمية."
+                    data-en="Discover researchers, professors, and specialists and explore their publications and interests."
+                >
+                    اكتشف الباحثين والأساتذة والمتخصصين وتعرّف على منشوراتهم واهتماماتهم العلمية.
+                </p>
+
+                <a
+                    href="#researchers"
+                    data-ar="استكشف الباحثين ←"
+                    data-en="Explore Researchers →"
+                >
+                    استكشف الباحثين ←
+                </a>
+
+            </article>
+
+
+            <!-- 04 -->
+
+            <article class="capability-card">
+
+                <span class="capability-number">
+                    04
+                </span>
+
+                <h3
+                    data-ar="ابنِ ملفك العلمي"
+                    data-en="Build Your Scientific Profile"
+                >
+                    ابنِ ملفك العلمي
+                </h3>
+
+                <p
+                    data-ar="اجمع أبحاثك ومقالاتك وملاحظاتك العلمية في ملف واحد وشاركها مع المجتمع العلمي."
+                    data-en="Collect your research, articles, and scientific notes in one profile and share them with the scientific community."
+                >
+                    اجمع أبحاثك ومقالاتك وملاحظاتك العلمية في ملف واحد وشاركها مع المجتمع العلمي.
+                </p>
+
+                <a
+                    href="#join"
+                    data-ar="أنشئ حسابك ←"
+                    data-en="Create Your Account →"
+                >
+                    أنشئ حسابك ←
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     BA RESEARCH AI
+
+     PROTOTYPE:
+     This section currently demonstrates the intended product experience.
+     The real research / AI backend is not implemented in index.html.
+========================== -->
+
+<section class="section research-ai" id="research-ai">
+
+    <div class="container research-ai-layout">
+
+        <div class="research-ai-copy">
+
+            <span
+                class="section-label"
+                data-ar="BA Research AI"
+                data-en="BA Research AI"
+            >
+                BA Research AI
+            </span>
+
+            <h2
+                data-ar="ابحث في المعرفة العلمية بطريقة أذكى"
+                data-en="Search Scientific Knowledge Smarter"
+            >
+                ابحث في المعرفة العلمية بطريقة أذكى
+            </h2>
+
+            <p
+                data-ar="اطرح سؤالًا علميًا، وابحث في الأبحاث والمصادر الموثوقة، واحصل على إجابة واضحة مدعومة بالمراجع."
+                data-en="Ask a scientific question, search trusted research sources, and get a clear answer supported by references."
+            >
+                اطرح سؤالًا علميًا، وابحث في الأبحاث والمصادر الموثوقة،
+                واحصل على إجابة واضحة مدعومة بالمراجع.
+            </p>
+
+
+            <ul class="ai-features">
+
+                <li
+                    data-ar="البحث في الأوراق العلمية"
+                    data-en="Search scientific papers"
+                >
+                    البحث في الأوراق العلمية
+                </li>
+
+                <li
+                    data-ar="إجابات مبنية على مصادر"
+                    data-en="Source-based answers"
+                >
+                    إجابات مبنية على مصادر
+                </li>
+
+                <li
+                    data-ar="تلخيص الأبحاث"
+                    data-en="Research summaries"
+                >
+                    تلخيص الأبحاث
+                </li>
+
+                <li
+                    data-ar="مقارنة بين الأوراق"
+                    data-en="Compare papers"
+                >
+                    مقارنة بين الأوراق
+                </li>
+
+                <li
+                    data-ar="شرح مبسط للمفاهيم"
+                    data-en="Simplified explanations"
+                >
+                    شرح مبسط للمفاهيم
+                </li>
+
+                <li
+                    data-ar="ترجمة علمية عربية وإنجليزية"
+                    data-en="Arabic-English scientific translation"
+                >
+                    ترجمة علمية عربية وإنجليزية
+                </li>
+
+            </ul>
+
+
+            <a
+                data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                class="btn btn-primary"
+                data-ar="جرّب BA Research"
+                data-en="Try BA Research"
+            >
+                جرّب BA Research
+            </a>
+
+        </div>
+
+
+        <div class="ai-demo">
+
+            <div class="ai-demo-header">
+
+                <div>
+
+                    <span class="ai-brand">
+                        BA
+                    </span>
+
+                    <span class="ai-mode">
+                        Research AI
+                    </span>
+
+                </div>
+
+                <span
+                    class="ai-status"
+                    data-ar="بحث علمي"
+                    data-en="Scientific Search"
+                >
+                    بحث علمي
+                </span>
+
+            </div>
+
+
+            <div class="ai-question">
+
+                <span
+                    class="question-label"
+                    data-ar="سؤال"
+                    data-en="Question"
+                >
+                    سؤال
+                </span>
+
+                <p
+                    data-ar="ما أحدث الأبحاث حول استخدام الذكاء الاصطناعي في اكتشاف الأدوية؟"
+                    data-en="What is the latest research on using artificial intelligence in drug discovery?"
+                >
+                    ما أحدث الأبحاث حول استخدام الذكاء الاصطناعي
+                    في اكتشاف الأدوية؟
+                </p>
+
+            </div>
+
+
+            <div class="ai-answer">
+
+                <span class="answer-label">
+                    BA AI
+                </span>
+
+                <p
+                    data-ar="تشير الأبحاث الحديثة إلى أن نماذج التعلم العميق أصبحت تُستخدم في اكتشاف المركبات الدوائية، توقع التفاعلات الجزيئية وتقليل الوقت المطلوب في المراحل الأولية لتطوير الأدوية."
+                    data-en="Recent research shows that deep learning models are increasingly used to discover drug compounds, predict molecular interactions, and reduce the time required in early drug-development stages."
+                >
+                    تشير الأبحاث الحديثة إلى أن نماذج التعلم العميق أصبحت تُستخدم
+                    في اكتشاف المركبات الدوائية، توقع التفاعلات الجزيئية وتقليل الوقت
+                    المطلوب في المراحل الأولية لتطوير الأدوية.
+                </p>
+
+            </div>
+
+
+            <div class="ai-sources">
+
+                <div class="source-card">
+
+                    <span class="source-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            AI in Drug Discovery
+                        </strong>
+
+                        <span>
+                            Nature Review • 2026
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="source-card">
+
+                    <span class="source-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Deep Learning for Molecular Design
+                        </strong>
+
+                        <span>
+                            Scientific Review • 2025
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="source-card">
+
+                    <span class="source-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Machine Learning in Pharma
+                        </strong>
+
+                        <span>
+                            Research Paper • 2026
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="ai-input-preview">
+
+                <span
+                    data-ar="اسأل سؤالًا علميًا..."
+                    data-en="Ask a scientific question..."
+                >
+                    اسأل سؤالًا علميًا...
+                </span>
+
+                <button type="button">
+                    ↑
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     PAPER INTELLIGENCE
+========================== -->
+
+<section
+    class="section paper-intelligence"
+    id="paper-intelligence"
+>
+
+    <div class="container paper-layout">
+
+
+        <!-- LEFT: PAPER PREVIEW -->
+
+        <div class="paper-preview">
+
+            <div class="paper-window">
+
+
+                <div class="paper-window-top">
+
+                    <div>
+
+                        <span class="paper-badge">
+                            PDF
+                        </span>
+
+                        <span
+                            class="paper-file-name"
+                            data-ar="ورقة-بحثية.pdf"
+                            data-en="research-paper.pdf"
+                        >
+                            ورقة-بحثية.pdf
+                        </span>
+
+                    </div>
+
+                    <span
+                        class="paper-status"
+                        data-ar="جاهز"
+                        data-en="Ready"
+                    >
+                        جاهز
+                    </span>
+
+                </div>
+
+
+                <div class="paper-body">
+
+
+                    <div class="paper-document">
+
+                        <span
+                            class="paper-small-label"
+                            data-ar="ورقة علمية"
+                            data-en="Research Paper"
+                        >
+                            ورقة علمية
+                        </span>
+
+
+                        <h3>
+                            Artificial Intelligence
+                            in Scientific Discovery
+                        </h3>
+
+
+                        <p
+                            data-ar="أصبحت التطورات الحديثة في التعلم الآلي تغير الطريقة التي يحلل بها الباحثون البيانات العلمية المعقدة..."
+                            data-en="Recent advances in machine learning are changing how researchers analyze complex scientific data..."
+                        >
+                            أصبحت التطورات الحديثة في التعلم الآلي
+                            تغير الطريقة التي يحلل بها الباحثون
+                            البيانات العلمية المعقدة...
+                        </p>
+
+
+                        <div class="paper-lines">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PAPER TOOLS -->
+
+                    <div class="paper-tools">
+
+                        <button
+                            type="button"
+                            class="paper-tool active"
+                            data-ar="الملخص"
+                            data-en="Summary"
+                        >
+                            الملخص
+                        </button>
+
+                        <button
+                            type="button"
+                            class="paper-tool"
+                            data-ar="النتائج"
+                            data-en="Findings"
+                        >
+                            النتائج
+                        </button>
+
+                        <button
+                            type="button"
+                            class="paper-tool"
+                            data-ar="المنهجية"
+                            data-en="Methodology"
+                        >
+                            المنهجية
+                        </button>
+
+                        <button
+                            type="button"
+                            class="paper-tool"
+                            data-ar="القيود"
+                            data-en="Limitations"
+                        >
+                            القيود
+                        </button>
+
+                        <button
+                            type="button"
+                            class="paper-tool"
+                            data-ar="الترجمة"
+                            data-en="Translate"
+                        >
+                            الترجمة
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUMMARY -->
+
+                <div class="paper-summary">
+
+                    <span class="summary-label">
+                        BA Summary
+                    </span>
+
+
+                    <h4
+                        data-ar="ملخص البحث"
+                        data-en="Research Summary"
+                    >
+                        ملخص البحث
+                    </h4>
+
+
+                    <p
+                        data-ar="يدرس البحث تأثير تقنيات الذكاء الاصطناعي على تسريع عمليات الاكتشاف العلمي وتحليل البيانات المعقدة، مع التركيز على النماذج التنبؤية وأتمتة تحليل النتائج."
+                        data-en="The paper examines how artificial intelligence can accelerate scientific discovery and complex data analysis, focusing on predictive models and automated result analysis."
+                    >
+                        يدرس البحث تأثير تقنيات الذكاء الاصطناعي
+                        على تسريع عمليات الاكتشاف العلمي وتحليل
+                        البيانات المعقدة، مع التركيز على النماذج
+                        التنبؤية وأتمتة تحليل النتائج.
+                    </p>
+
+
+                    <div class="summary-points">
+
+
+                        <div>
+
+                            <span>
+                                01
+                            </span>
+
+                            <p
+                                data-ar="تقليل الوقت المطلوب لتحليل البيانات."
+                                data-en="Reduce the time required to analyze data."
+                            >
+                                تقليل الوقت المطلوب لتحليل البيانات.
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                02
+                            </span>
+
+                            <p
+                                data-ar="تحسين اكتشاف الأنماط المعقدة."
+                                data-en="Improve the discovery of complex patterns."
+                            >
+                                تحسين اكتشاف الأنماط المعقدة.
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                03
+                            </span>
+
+                            <p
+                                data-ar="دعم الباحث في اتخاذ قرارات مبنية على البيانات."
+                                data-en="Help researchers make data-driven decisions."
+                            >
+                                دعم الباحث في اتخاذ قرارات مبنية على البيانات.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RIGHT: COPY -->
+
+        <div class="paper-copy">
+
+            <span
+                class="section-label"
+                data-ar="فهم الأبحاث"
+                data-en="Paper Intelligence"
+            >
+                فهم الأبحاث
+            </span>
+
+
+            <h2>
+
+                <span
+                    data-ar="لا تقرأ الورقة فقط."
+                    data-en="Don't Just Read the Paper."
+                >
+                    لا تقرأ الورقة فقط.
+                </span>
+
+                <br>
+
+                <span
+                    data-ar="افهمها."
+                    data-en="Understand It."
+                >
+                    افهمها.
+                </span>
+
+            </h2>
+
+
+            <p
+                data-ar="افتح أو ارفع أي ورقة علمية داخل BA، ودع المنصة تساعدك على فهم محتواها بسرعة ووضوح مع الحفاظ على السياق العلمي."
+                data-en="Open or upload a scientific paper to BA and let the platform help you understand it clearly and efficiently while preserving its scientific context."
+            >
+                افتح أو ارفع أي ورقة علمية داخل BA،
+                ودع المنصة تساعدك على فهم محتواها بسرعة
+                ووضوح مع الحفاظ على السياق العلمي.
+            </p>
+
+
+            <div class="paper-feature-list">
+
+
+                <!-- 01 -->
+
+                <div class="paper-feature">
+
+                    <span class="paper-feature-icon">
+                        01
+                    </span>
+
+                    <div>
+
+                        <h3
+                            data-ar="ملخص ذكي"
+                            data-en="Smart Summary"
+                        >
+                            ملخص ذكي
+                        </h3>
+
+                        <p
+                            data-ar="افهم الأفكار الأساسية للبحث قبل الغوص في جميع تفاصيله."
+                            data-en="Understand the paper's core ideas before diving into every detail."
+                        >
+                            افهم الأفكار الأساسية للبحث
+                            قبل الغوص في جميع تفاصيله.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 02 -->
+
+                <div class="paper-feature">
+
+                    <span class="paper-feature-icon">
+                        02
+                    </span>
+
+                    <div>
+
+                        <h3
+                            data-ar="أهم النتائج"
+                            data-en="Key Findings"
+                        >
+                            أهم النتائج
+                        </h3>
+
+                        <p
+                            data-ar="اعرف ماذا توصل إليه الباحثون ولماذا قد تكون النتائج مهمة."
+                            data-en="See what the researchers found and why those results may matter."
+                        >
+                            اعرف ماذا توصل إليه الباحثون
+                            ولماذا قد تكون النتائج مهمة.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 03 -->
+
+                <div class="paper-feature">
+
+                    <span class="paper-feature-icon">
+                        03
+                    </span>
+
+                    <div>
+
+                        <h3
+                            data-ar="المنهجية والقيود"
+                            data-en="Methodology & Limitations"
+                        >
+                            المنهجية والقيود
+                        </h3>
+
+                        <p
+                            data-ar="افهم كيف أُجري البحث وما الحدود التي ينبغي مراعاتها عند تفسير النتائج."
+                            data-en="Understand how the study was conducted and what limitations should be considered when interpreting the results."
+                        >
+                            افهم كيف أُجري البحث وما الحدود
+                            التي ينبغي مراعاتها عند تفسير النتائج.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 04 -->
+
+                <div class="paper-feature">
+
+                    <span class="paper-feature-icon">
+                        04
+                    </span>
+
+                    <div>
+
+                        <h3
+                            data-ar="ترجمة علمية"
+                            data-en="Scientific Translation"
+                        >
+                            ترجمة علمية
+                        </h3>
+
+                        <p
+                            data-ar="ترجم بين العربية والإنجليزية مع الحفاظ على معنى المصطلحات والسياق العلمي."
+                            data-en="Translate between Arabic and English while preserving scientific terminology and context."
+                        >
+                            ترجم بين العربية والإنجليزية
+                            مع الحفاظ على معنى المصطلحات
+                            والسياق العلمي.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <a
+                data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                class="btn btn-primary"
+                data-ar="ارفع ورقة علمية"
+                data-en="Upload a Paper"
+            >
+                ارفع ورقة علمية
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     RESEARCHERS
+
+     PROTOTYPE:
+     Researcher cards on the landing page are demonstration content.
+     They are not yet loaded from public researcher profiles.
+========================== -->
+
+<section class="section researchers" id="researchers">
+
+    <div class="container">
+
+        <div class="section-header researchers-header">
+
+            <div>
+
+                <span
+                    class="section-label"
+                    data-ar="الباحثون"
+                    data-en="Researchers"
+                >
+                    الباحثون
+                </span>
+
+                <h2>
+                    <span
+                        data-ar="اكتشف الباحثين"
+                        data-en="Discover Researchers"
+                    >
+                        اكتشف الباحثين
+                    </span>
+
+                    <br>
+
+                    <span
+                        data-ar="وتابع أعمالهم"
+                        data-en="and Follow Their Work"
+                    >
+                        وتابع أعمالهم
+                    </span>
+                </h2>
+
+            </div>
+
+            <p
+                data-ar="تعرّف على باحثين وأساتذة ومتخصصين من مجالات مختلفة، واستكشف منشوراتهم واهتماماتهم العلمية."
+                data-en="Discover researchers, professors, and specialists across different fields and explore their publications and scientific interests."
+            >
+                تعرّف على باحثين وأساتذة ومتخصصين من مجالات مختلفة،
+                واستكشف منشوراتهم واهتماماتهم العلمية.
+            </p>
+
+        </div>
+
+
+        <div class="researchers-grid">
+
+
+            <!-- Researcher 01 -->
+
+            <article class="researcher-card">
+
+                <div class="researcher-top">
+
+                    <div class="researcher-avatar">
+                        AK
+                    </div>
+
+                    <span class="researcher-field">
+                        Artificial Intelligence
+                    </span>
+
+                </div>
+
+
+                <div class="researcher-info">
+
+                    <h3
+                        data-ar="أحمد كريم"
+                        data-en="Ahmed Kareem"
+                    >
+                        أحمد كريم
+                    </h3>
+
+                    <span
+                        class="researcher-title"
+                        data-ar="باحث في الذكاء الاصطناعي"
+                        data-en="Artificial Intelligence Researcher"
+                    >
+                        باحث في الذكاء الاصطناعي
+                    </span>
+
+                    <span
+                        class="researcher-institution"
+                        data-ar="مختبر أبحاث جامعي"
+                        data-en="University Research Lab"
+                    >
+                        مختبر أبحاث جامعي
+                    </span>
+
+                </div>
+
+
+                <p
+                    class="researcher-bio"
+                    data-ar="يعمل على تطبيقات التعلم الآلي في تحليل البيانات العلمية واكتشاف الأنماط المعقدة."
+                    data-en="Works on machine learning applications for scientific data analysis and complex pattern discovery."
+                >
+                    يعمل على تطبيقات التعلم الآلي
+                    في تحليل البيانات العلمية
+                    واكتشاف الأنماط المعقدة.
+                </p>
+
+
+                <div class="researcher-stats">
+
+                    <div>
+                        <strong>18</strong>
+
+                        <span
+                            data-ar="منشور"
+                            data-en="Publications"
+                        >
+                            منشور
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong>7</strong>
+
+                        <span
+                            data-ar="أبحاث"
+                            data-en="Papers"
+                        >
+                            أبحاث
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong>4</strong>
+
+                        <span
+                            data-ar="ملاحظات"
+                            data-en="Notes"
+                        >
+                            ملاحظات
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    class="researcher-link"
+                    data-ar="عرض الملف العلمي ←"
+                    data-en="View Scientific Profile →"
+                >
+                    عرض الملف العلمي ←
+                </a>
+
+            </article>
+
+
+            <!-- Researcher 02 -->
+
+            <article class="researcher-card">
+
+                <div class="researcher-top">
+
+                    <div class="researcher-avatar">
+                        LN
+                    </div>
+
+                    <span class="researcher-field">
+                        Physics
+                    </span>
+
+                </div>
+
+
+                <div class="researcher-info">
+
+                    <h3
+                        data-ar="ليلى ناصر"
+                        data-en="Layla Nasser"
+                    >
+                        ليلى ناصر
+                    </h3>
+
+                    <span
+                        class="researcher-title"
+                        data-ar="باحثة في الفيزياء"
+                        data-en="Physics Researcher"
+                    >
+                        باحثة في الفيزياء
+                    </span>
+
+                    <span
+                        class="researcher-institution"
+                        data-ar="معهد الفيزياء"
+                        data-en="Institute of Physics"
+                    >
+                        معهد الفيزياء
+                    </span>
+
+                </div>
+
+
+                <p
+                    class="researcher-bio"
+                    data-ar="تركز أبحاثها على فيزياء المواد والأنظمة الكمومية والتقنيات المستقبلية."
+                    data-en="Her research focuses on materials physics, quantum systems, and emerging technologies."
+                >
+                    تركز أبحاثها على فيزياء المواد
+                    والأنظمة الكمومية
+                    والتقنيات المستقبلية.
+                </p>
+
+
+                <div class="researcher-stats">
+
+                    <div>
+                        <strong>24</strong>
+
+                        <span
+                            data-ar="منشور"
+                            data-en="Publications"
+                        >
+                            منشور
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong>11</strong>
+
+                        <span
+                            data-ar="أبحاث"
+                            data-en="Papers"
+                        >
+                            أبحاث
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong>6</strong>
+
+                        <span
+                            data-ar="ملاحظات"
+                            data-en="Notes"
+                        >
+                            ملاحظات
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    class="researcher-link"
+                    data-ar="عرض الملف العلمي ←"
+                    data-en="View Scientific Profile →"
+                >
+                    عرض الملف العلمي ←
+                </a>
+
+            </article>
+
+
+            <!-- Researcher 03 -->
+
+            <article class="researcher-card">
+
+                <div class="researcher-top">
+
+                    <div class="researcher-avatar">
+                        OS
+                    </div>
+
+                    <span class="researcher-field">
+                        Biotechnology
+                    </span>
+
+                </div>
+
+
+                <div class="researcher-info">
+
+                    <h3
+                        data-ar="عمر سالم"
+                        data-en="Omar Salem"
+                    >
+                        عمر سالم
+                    </h3>
+
+                    <span
+                        class="researcher-title"
+                        data-ar="باحث في التكنولوجيا الحيوية"
+                        data-en="Biotechnology Researcher"
+                    >
+                        باحث في التكنولوجيا الحيوية
+                    </span>
+
+                    <span
+                        class="researcher-institution"
+                        data-ar="مركز الأبحاث الطبية الحيوية"
+                        data-en="Biomedical Research Center"
+                    >
+                        مركز الأبحاث الطبية الحيوية
+                    </span>
+
+                </div>
+
+
+                <p
+                    class="researcher-bio"
+                    data-ar="مهتم بالتقنيات الحيوية والمعلوماتية الحيوية وتطبيقات الذكاء الاصطناعي في الطب."
+                    data-en="Interested in biotechnology, bioinformatics, and artificial intelligence applications in medicine."
+                >
+                    مهتم بالتقنيات الحيوية،
+                    المعلوماتية الحيوية
+                    وتطبيقات الذكاء الاصطناعي في الطب.
+                </p>
+
+
+                <div class="researcher-stats">
+
+                    <div>
+                        <strong>14</strong>
+
+                        <span
+                            data-ar="منشور"
+                            data-en="Publications"
+                        >
+                            منشور
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong>9</strong>
+
+                        <span
+                            data-ar="أبحاث"
+                            data-en="Papers"
+                        >
+                            أبحاث
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong>5</strong>
+
+                        <span
+                            data-ar="ملاحظات"
+                            data-en="Notes"
+                        >
+                            ملاحظات
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    class="researcher-link"
+                    data-ar="عرض الملف العلمي ←"
+                    data-en="View Scientific Profile →"
+                >
+                    عرض الملف العلمي ←
+                </a>
+
+            </article>
+
+        </div>
+
+
+        <div class="researchers-action">
+
+            <a
+                data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                class="btn btn-secondary"
+                data-ar="استكشف جميع الباحثين"
+                data-en="Explore All Researchers"
+            >
+                استكشف جميع الباحثين
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     SCIENTIFIC PROFILE
+========================== -->
+
+<section class="section scientific-profile" id="scientific-profile">
+
+    <div class="container profile-layout">
+
+
+        <!-- PROFILE PREVIEW -->
+
+        <div class="profile-preview">
+
+            <div class="profile-card-main">
+
+                <div class="profile-cover"></div>
+
+
+                <div class="profile-main-content">
+
+                    <div class="profile-header-row">
+
+                        <div class="profile-avatar-large">
+                            OM
+                        </div>
+
+
+                        <div class="profile-actions">
+
+                            <button
+                                type="button"
+                                class="profile-follow"
+                                data-ar="متابعة"
+                                data-en="Follow"
+                            >
+                                متابعة
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-identity">
+
+                        <h3
+                            data-ar="عمر مصطاف"
+                            data-en="Omar Mussttaf"
+                        >
+                            عمر مصطاف
+                        </h3>
+
+                        <span
+                            class="profile-role"
+                            data-ar="باحث ومهندس حاسوب"
+                            data-en="Researcher & Computer Engineer"
+                        >
+                            باحث ومهندس حاسوب
+                        </span>
+
+                        <span
+                            class="profile-place"
+                            data-ar="بغداد، العراق"
+                            data-en="Baghdad, Iraq"
+                        >
+                            بغداد، العراق
+                        </span>
+
+                    </div>
+
+
+                    <p
+                        class="profile-bio-main"
+                        data-ar="مهتم بالفيزياء، الحوسبة الكمية، الذكاء الاصطناعي، وتحليل العلاقة بين المعرفة والتكنولوجيا."
+                        data-en="Interested in physics, quantum computing, artificial intelligence, and the relationship between knowledge and technology."
+                    >
+                        مهتم بالفيزياء، الحوسبة الكمية، الذكاء الاصطناعي،
+                        وتحليل العلاقة بين المعرفة والتكنولوجيا.
+                    </p>
+
+
+                    <div class="profile-interests">
+
+                        <span>Quantum Computing</span>
+                        <span>Artificial Intelligence</span>
+                        <span>Physics</span>
+                        <span>Scientific Computing</span>
+
+                    </div>
+
+
+                    <div class="profile-stats-large">
+
+                        <div>
+                            <strong>12</strong>
+
+                            <span
+                                data-ar="منشور"
+                                data-en="Publications"
+                            >
+                                منشور
+                            </span>
+                        </div>
+
+
+                        <div>
+                            <strong>18</strong>
+
+                            <span
+                                data-ar="ملاحظة بحثية"
+                                data-en="Research Notes"
+                            >
+                                ملاحظة بحثية
+                            </span>
+                        </div>
+
+
+                        <div>
+                            <strong>7</strong>
+
+                            <span
+                                data-ar="مقالات"
+                                data-en="Articles"
+                            >
+                                مقالات
+                            </span>
+                        </div>
+
+
+                        <div>
+                            <strong>5</strong>
+
+                            <span
+                                data-ar="مجموعات"
+                                data-en="Collections"
+                            >
+                                مجموعات
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-tabs">
+
+                        <button type="button"
+                            class="profile-tab active"
+                            data-ar="المنشورات"
+                            data-en="Publications"
+                        >
+                            المنشورات
+                        </button>
+
+                        <button type="button"
+                            class="profile-tab"
+                            data-ar="الملاحظات"
+                            data-en="Research Notes"
+                        >
+                            الملاحظات
+                        </button>
+
+                        <button type="button"
+                            class="profile-tab"
+                            data-ar="المقالات"
+                            data-en="Articles"
+                        >
+                            المقالات
+                        </button>
+
+                        <button type="button"
+                            class="profile-tab"
+                            data-ar="المجموعات"
+                            data-en="Collections"
+                        >
+                            المجموعات
+                        </button>
+
+                    </div>
+
+
+                    <div class="profile-publication">
+
+                        <div class="publication-icon">
+                            DOI
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Quantum Computing and Future Scientific Systems
+                            </strong>
+
+                            <span
+                                data-ar="ورقة بحثية • 2026"
+                                data-en="Research Paper • 2026"
+                            >
+                                ورقة بحثية • 2026
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-publication">
+
+                        <div class="publication-icon">
+                            RN
+                        </div>
+
+                        <div>
+
+                            <strong
+                                data-ar="ملاحظات حول مستقبل الحوسبة العلمية"
+                                data-en="Notes on the Future of Scientific Computing"
+                            >
+                                ملاحظات حول مستقبل الحوسبة العلمية
+                            </strong>
+
+                            <span
+                                data-ar="ملاحظة بحثية • منذ يومين"
+                                data-en="Research Note • 2 days ago"
+                            >
+                                ملاحظة بحثية • منذ يومين
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PROFILE COPY -->
+
+        <div class="profile-copy">
+
+            <span
+                class="section-label"
+                data-ar="هويتك العلمية"
+                data-en="Your Scientific Identity"
+            >
+                هويتك العلمية
+            </span>
+
+
+            <h2>
+
+                <span
+                    data-ar="ابنِ مكانك"
+                    data-en="Build Your Place"
+                >
+                    ابنِ مكانك
+                </span>
+
+                <br>
+
+                <span
+                    data-ar="داخل المجتمع العلمي"
+                    data-en="in the Scientific Community"
+                >
+                    داخل المجتمع العلمي
+                </span>
+
+            </h2>
+
+
+            <p
+                data-ar="ملفك في BA ليس مجرد صفحة شخصية. هو مساحة تجمع أعمالك، أبحاثك، مقالاتك، ملاحظاتك واهتماماتك العلمية في مكان واحد."
+                data-en="Your BA profile is more than a personal page. It is a space that brings together your research, publications, articles, notes, and scientific interests."
+            >
+                ملفك في BA ليس مجرد صفحة شخصية.
+                هو مساحة تجمع أعمالك، أبحاثك، مقالاتك،
+                ملاحظاتك واهتماماتك العلمية في مكان واحد.
+            </p>
+
+
+            <div class="profile-benefits">
+
+
+                <div class="profile-benefit">
+
+                    <span>01</span>
+
+                    <div>
+
+                        <h3
+                            data-ar="اعرض أعمالك"
+                            data-en="Showcase Your Work"
+                        >
+                            اعرض أعمالك
+                        </h3>
+
+                        <p
+                            data-ar="اجمع أوراقك البحثية، مقالاتك، مشاريعك العلمية وملاحظاتك في مكان واحد."
+                            data-en="Bring your research papers, articles, scientific projects, and notes together in one place."
+                        >
+                            اجمع أوراقك البحثية، مقالاتك، مشاريعك
+                            العلمية وملاحظاتك في مكان واحد.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-benefit">
+
+                    <span>02</span>
+
+                    <div>
+
+                        <h3
+                            data-ar="شارك معرفتك"
+                            data-en="Share Your Knowledge"
+                        >
+                            شارك معرفتك
+                        </h3>
+
+                        <p
+                            data-ar="حوّل قراءتك وأفكارك إلى ملاحظات علمية ومحتوى يمكن للآخرين اكتشافه."
+                            data-en="Turn your reading and ideas into scientific notes and content others can discover."
+                        >
+                            حوّل قراءتك وأفكارك إلى ملاحظات علمية
+                            ومحتوى يمكن للآخرين اكتشافه.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-benefit">
+
+                    <span>03</span>
+
+                    <div>
+
+                        <h3
+                            data-ar="ابنِ شبكة علمية"
+                            data-en="Build a Scientific Network"
+                        >
+                            ابنِ شبكة علمية
+                        </h3>
+
+                        <p
+                            data-ar="تواصل مع أشخاص يعملون في مجالات مشابهة واكتشف أعمالهم الجديدة."
+                            data-en="Connect with people working in related fields and discover their latest work."
+                        >
+                            تواصل مع أشخاص يعملون في مجالات مشابهة
+                            واكتشف أعمالهم الجديدة.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <a
+                href="./signup.html"
+                class="btn btn-primary"
+                data-ar="أنشئ ملفك العلمي"
+                data-en="Create Your Scientific Profile"
+            >
+                أنشئ ملفك العلمي
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     RESEARCH NOTES
+========================== -->
+
+<section class="section research-notes" id="research-notes">
+
+    <div class="container notes-layout">
+
+
+        <!-- COPY -->
+
+        <div class="notes-copy">
+
+            <span
+                class="section-label"
+                data-ar="ملاحظات البحث"
+                data-en="Research Notes"
+            >
+                ملاحظات البحث
+            </span>
+
+
+            <h2>
+
+                <span
+                    data-ar="حوّل ما تقرأه"
+                    data-en="Turn What You Read"
+                >
+                    حوّل ما تقرأه
+                </span>
+
+                <br>
+
+                <span
+                    data-ar="إلى معرفة قابلة للمشاركة"
+                    data-en="Into Shareable Knowledge"
+                >
+                    إلى معرفة قابلة للمشاركة
+                </span>
+
+            </h2>
+
+
+            <p
+                data-ar="بعد قراءة أي ورقة علمية، يمكنك داخل BA كتابة ملاحظاتك، ربطها بالمصدر، إضافة أهم النتائج، ثم حفظها لنفسك أو نشرها للمجتمع العلمي."
+                data-en="After reading any scientific paper, BA lets you write your own notes, connect them to the source, add key findings, and save them privately or publish them to the scientific community."
+            >
+                بعد قراءة أي ورقة علمية، يمكنك داخل BA كتابة ملاحظاتك،
+                ربطها بالمصدر، إضافة أهم النتائج، ثم حفظها لنفسك
+                أو نشرها للمجتمع العلمي.
+            </p>
+
+
+            <div class="notes-flow">
+
+                <div>
+                    <span>01</span>
+
+                    <p
+                        data-ar="اقرأ البحث"
+                        data-en="Read the Paper"
+                    >
+                        اقرأ البحث
+                    </p>
+                </div>
+
+
+                <div>
+                    <span>02</span>
+
+                    <p
+                        data-ar="افهمه باستخدام BA"
+                        data-en="Understand it with BA"
+                    >
+                        افهمه باستخدام BA
+                    </p>
+                </div>
+
+
+                <div>
+                    <span>03</span>
+
+                    <p
+                        data-ar="أضف ملاحظتك"
+                        data-en="Add Your Insight"
+                    >
+                        أضف ملاحظتك
+                    </p>
+                </div>
+
+
+                <div>
+                    <span>04</span>
+
+                    <p
+                        data-ar="احفظ أو انشر"
+                        data-en="Save or Publish"
+                    >
+                        احفظ أو انشر
+                    </p>
+                </div>
+
+            </div>
+
+
+            <a
+                href="#join"
+                class="btn btn-primary"
+                data-ar="ابدأ بإنشاء ملاحظاتك"
+                data-en="Start Creating Notes"
+            >
+                ابدأ بإنشاء ملاحظاتك
+            </a>
+
+        </div>
+
+
+        <!-- NOTE PREVIEW -->
+
+        <div class="note-preview">
+
+            <div class="note-window">
+
+                <div class="note-window-top">
+
+                    <div>
+
+                        <span class="note-type">
+                            Research Note
+                        </span>
+
+                        <span
+                            class="note-visibility"
+                            data-ar="عام"
+                            data-en="Public"
+                        >
+                            عام
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="note-save"
+                        data-ar="حفظ"
+                        data-en="Save"
+                    >
+                        حفظ
+                    </button>
+
+                </div>
+
+
+                <div class="note-source">
+
+                    <span
+                        class="note-small-label"
+                        data-ar="المصدر"
+                        data-en="Source"
+                    >
+                        المصدر
+                    </span>
+
+                    <strong>
+                        Artificial Intelligence in Scientific Discovery
+                    </strong>
+
+                    <span>
+                        DOI • 2026
+                    </span>
+
+                </div>
+
+
+                <div class="note-title">
+
+                    <span
+                        class="note-small-label"
+                        data-ar="عنوان الملاحظة"
+                        data-en="Note Title"
+                    >
+                        عنوان الملاحظة
+                    </span>
+
+                    <h3
+                        data-ar="كيف يغيّر الذكاء الاصطناعي عملية الاكتشاف العلمي؟"
+                        data-en="How is AI Changing the Scientific Discovery Process?"
+                    >
+                        كيف يغيّر الذكاء الاصطناعي عملية الاكتشاف العلمي؟
+                    </h3>
+
+                </div>
+
+
+                <div class="note-editor">
+
+                    <span
+                        class="note-small-label"
+                        data-ar="ملاحظتك"
+                        data-en="Your Note"
+                    >
+                        ملاحظتك
+                    </span>
+
+                    <p
+                        data-ar="أبرز ما يلفت الانتباه في هذا البحث هو انتقال الذكاء الاصطناعي من مجرد أداة لتحليل البيانات إلى أداة تشارك في اقتراح الفرضيات واكتشاف الأنماط."
+                        data-en="The most interesting point in this paper is the shift of artificial intelligence from a data-analysis tool to a system that can help generate hypotheses and discover patterns."
+                    >
+                        أبرز ما يلفت الانتباه في هذا البحث هو انتقال
+                        الذكاء الاصطناعي من مجرد أداة لتحليل البيانات
+                        إلى أداة تشارك في اقتراح الفرضيات واكتشاف الأنماط.
+                    </p>
+
+                </div>
+
+
+                <div class="note-key-points">
+
+                    <span
+                        class="note-small-label"
+                        data-ar="أهم النقاط"
+                        data-en="Key Points"
+                    >
+                        أهم النقاط
+                    </span>
+
+
+                    <div>
+                        <span>01</span>
+
+                        <p
+                            data-ar="تسريع تحليل البيانات العلمية."
+                            data-en="Faster scientific data analysis."
+                        >
+                            تسريع تحليل البيانات العلمية.
+                        </p>
+                    </div>
+
+
+                    <div>
+                        <span>02</span>
+
+                        <p
+                            data-ar="اكتشاف أنماط يصعب ملاحظتها يدويًا."
+                            data-en="Discovering patterns that are difficult to identify manually."
+                        >
+                            اكتشاف أنماط يصعب ملاحظتها يدويًا.
+                        </p>
+                    </div>
+
+
+                    <div>
+                        <span>03</span>
+
+                        <p
+                            data-ar="فتح طرق جديدة لبناء الفرضيات."
+                            data-en="Opening new approaches to hypothesis generation."
+                        >
+                            فتح طرق جديدة لبناء الفرضيات.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="note-tags">
+
+                    <span>Artificial Intelligence</span>
+                    <span>Scientific Discovery</span>
+                    <span>Machine Learning</span>
+
+                </div>
+
+
+                <div class="note-bottom">
+
+                    <span
+                        data-ar="مرتبط بورقة علمية"
+                        data-en="Linked to a scientific paper"
+                    >
+                        مرتبط بورقة علمية
+                    </span>
+
+                    <button
+                        type="button"
+                        data-ar="نشر"
+                        data-en="Publish"
+                    >
+                        نشر
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     SCIENTIFIC CONTENT
+
+     PROTOTYPE:
+     Content cards below are demonstration content until
+     papers, notes and articles are connected to real data.
+========================== -->
+
+<section class="section scientific-content" id="articles">
+
+    <div class="container">
+
+        <div class="section-header content-header">
+
+            <div>
+
+                <span
+                    class="section-label"
+                    data-ar="المحتوى العلمي"
+                    data-en="Scientific Content"
+                >
+                    المحتوى العلمي
+                </span>
+
+                <h2>
+                    <span
+                        data-ar="اكتشف المعرفة"
+                        data-en="Discover Knowledge"
+                    >
+                        اكتشف المعرفة
+                    </span>
+
+                    <br>
+
+                    <span
+                        data-ar="من أكثر من زاوية"
+                        data-en="From More Than One Angle"
+                    >
+                        من أكثر من زاوية
+                    </span>
+                </h2>
+
+            </div>
+
+
+            <p
+                data-ar="استكشف أوراقًا علمية، ملاحظات بحثية ومقالات يشاركها الباحثون والمتخصصون داخل BA."
+                data-en="Explore scientific papers, research notes, and articles shared by researchers and specialists across BA."
+            >
+                استكشف أوراقًا علمية، ملاحظات بحثية
+                ومقالات يشاركها الباحثون والمتخصصون داخل BA.
+            </p>
+
+        </div>
+
+
+
+        <div class="content-grid">
+
+
+            <!-- PAPER -->
+
+            <article class="content-card">
+
+                <div class="content-card-top">
+
+                    <span
+                        class="content-type"
+                        data-ar="ورقة علمية"
+                        data-en="Research Paper"
+                    >
+                        ورقة علمية
+                    </span>
+
+                    <span>
+                        2026
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    Quantum Computing
+                    and Scientific Simulation
+                </h3>
+
+
+                <p
+                    data-ar="دراسة حول استخدام الحوسبة الكمية في محاكاة الأنظمة العلمية المعقدة وتسريع بعض العمليات الحسابية."
+                    data-en="A study exploring how quantum computing can be used to simulate complex scientific systems and accelerate selected computational processes."
+                >
+                    دراسة حول استخدام الحوسبة الكمية
+                    في محاكاة الأنظمة العلمية المعقدة
+                    وتسريع بعض العمليات الحسابية.
+                </p>
+
+
+                <div class="content-author">
+
+                    <div class="content-avatar">
+                        LN
+                    </div>
+
+                    <div>
+
+                        <strong
+                            data-ar="ليلى ناصر"
+                            data-en="Layla Nasser"
+                        >
+                            ليلى ناصر
+                        </strong>
+
+                        <span>
+                            Physics
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    class="content-link"
+                    data-ar="اقرأ الورقة ←"
+                    data-en="Read Paper →"
+                >
+                    اقرأ الورقة ←
+                </a>
+
+            </article>
+
+
+
+            <!-- RESEARCH NOTE -->
+
+            <article class="content-card featured-content-card">
+
+                <div class="content-card-top">
+
+                    <span
+                        class="content-type"
+                        data-ar="ملاحظة بحثية"
+                        data-en="Research Note"
+                    >
+                        ملاحظة بحثية
+                    </span>
+
+                    <span
+                        data-ar="جديد"
+                        data-en="New"
+                    >
+                        جديد
+                    </span>
+
+                </div>
+
+
+                <h3
+                    data-ar="هل يمكن للذكاء الاصطناعي أن يغيّر طريقة بناء الفرضيات العلمية؟"
+                    data-en="Can AI Change How Scientific Hypotheses Are Built?"
+                >
+                    هل يمكن للذكاء الاصطناعي
+                    أن يغيّر طريقة بناء الفرضيات العلمية؟
+                </h3>
+
+
+                <p
+                    data-ar="ملاحظة تربط بين عدد من الأبحاث الحديثة وتحلل كيف بدأت نماذج الذكاء الاصطناعي بالانتقال من تحليل البيانات إلى المساهمة في صياغة فرضيات جديدة."
+                    data-en="A research note connecting recent studies and examining how AI models are moving from data analysis toward assisting in the generation of new scientific hypotheses."
+                >
+                    ملاحظة تربط بين عدد من الأبحاث الحديثة
+                    وتحلل كيف بدأت نماذج الذكاء الاصطناعي
+                    بالانتقال من تحليل البيانات إلى المساهمة
+                    في صياغة فرضيات جديدة.
+                </p>
+
+
+                <div class="content-author">
+
+                    <div class="content-avatar">
+                        OM
+                    </div>
+
+                    <div>
+
+                        <strong
+                            data-ar="عمر مصطفى"
+                            data-en="Omar Musttaf"
+                        >
+                            عمر مصطفى
+                        </strong>
+
+                        <span>
+                            AI • Computing
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    class="content-link"
+                    data-ar="اقرأ الملاحظة ←"
+                    data-en="Read Note →"
+                >
+                    اقرأ الملاحظة ←
+                </a>
+
+            </article>
+
+
+
+            <!-- ARTICLE -->
+
+            <article class="content-card">
+
+                <div class="content-card-top">
+
+                    <span
+                        class="content-type"
+                        data-ar="مقال"
+                        data-en="Article"
+                    >
+                        مقال
+                    </span>
+
+                    <span>
+                        8 min
+                    </span>
+
+                </div>
+
+
+                <h3
+                    data-ar="كيف نفهم الورقة العلمية بطريقة صحيحة؟"
+                    data-en="How Should We Read a Scientific Paper?"
+                >
+                    كيف نفهم الورقة العلمية
+                    بطريقة صحيحة؟
+                </h3>
+
+
+                <p
+                    data-ar="دليل مبسط لفهم بنية الأوراق العلمية، قراءة المنهجية والنتائج، والتمييز بين الاستنتاجات والقيود."
+                    data-en="A practical guide to understanding scientific-paper structure, methodology, results, conclusions, and limitations."
+                >
+                    دليل مبسط لفهم بنية الأوراق العلمية،
+                    قراءة المنهجية والنتائج،
+                    والتمييز بين الاستنتاجات والقيود.
+                </p>
+
+
+                <div class="content-author">
+
+                    <div class="content-avatar">
+                        AK
+                    </div>
+
+                    <div>
+
+                        <strong
+                            data-ar="أحمد كريم"
+                            data-en="Ahmed Kareem"
+                        >
+                            أحمد كريم
+                        </strong>
+
+                        <span>
+                            Research Methods
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    class="content-link"
+                    data-ar="اقرأ المقال ←"
+                    data-en="Read Article →"
+                >
+                    اقرأ المقال ←
+                </a>
+
+            </article>
+
+        </div>
+
+
+        <div class="content-action">
+
+            <a
+                data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                class="btn btn-secondary"
+                data-ar="استكشف المزيد من المحتوى"
+                data-en="Explore More Content"
+            >
+                استكشف المزيد من المحتوى
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     WHY BA
+========================== -->
+
+<section class="section why-ba" id="about">
+
+    <div class="container">
+
+        <div class="why-ba-header">
+
+            <span
+                class="section-label"
+                data-ar="لماذا BA؟"
+                data-en="Why BA?"
+            >
+                لماذا BA؟
+            </span>
+
+            <h2>
+                <span
+                    data-ar="لأن المعرفة العلمية"
+                    data-en="Because Scientific Knowledge"
+                >
+                    لأن المعرفة العلمية
+                </span>
+
+                <br>
+
+                <span
+                    data-ar="لا يجب أن تكون مشتتة"
+                    data-en="Shouldn't Be Fragmented"
+                >
+                    لا يجب أن تكون مشتتة
+                </span>
+            </h2>
+
+            <p
+                data-ar="البحث العلمي اليوم موزع بين محركات بحث، ملفات PDF، أدوات ذكاء اصطناعي، تطبيقات ملاحظات ومنصات نشر مختلفة. BA يحاول جمع هذه الرحلة في بيئة علمية واحدة."
+                data-en="Scientific work today is fragmented across search engines, PDFs, AI tools, note-taking apps, and publishing platforms. BA brings that journey into one scientific environment."
+            >
+                البحث العلمي اليوم موزع بين محركات بحث،
+                ملفات PDF، أدوات ذكاء اصطناعي، تطبيقات ملاحظات
+                ومنصات نشر مختلفة. BA يحاول جمع هذه الرحلة
+                في بيئة علمية واحدة.
+            </p>
+
+        </div>
+
+
+        <div class="why-ba-grid">
+
+
+            <!-- 01 -->
+
+            <article class="why-card">
+
+                <span class="why-number">
+                    01
+                </span>
+
+                <h3
+                    data-ar="كل شيء في مكان واحد"
+                    data-en="One Place for the Research Journey"
+                >
+                    كل شيء في مكان واحد
+                </h3>
+
+                <p
+                    data-ar="من اكتشاف الورقة العلمية إلى فهمها، حفظها، إضافة ملاحظاتك عليها ومشاركتها."
+                    data-en="From discovering a scientific paper to understanding it, saving it, adding your own insights, and sharing them."
+                >
+                    من اكتشاف الورقة العلمية إلى فهمها،
+                    حفظها، إضافة ملاحظاتك عليها ومشاركتها.
+                </p>
+
+            </article>
+
+
+            <!-- 02 -->
+
+            <article class="why-card">
+
+                <span class="why-number">
+                    02
+                </span>
+
+                <h3
+                    data-ar="الذكاء الاصطناعي مرتبط بالمصادر"
+                    data-en="AI Connected to Sources"
+                >
+                    الذكاء الاصطناعي مرتبط بالمصادر
+                </h3>
+
+                <p
+                    data-ar="الفكرة ليست الحصول على إجابة فقط، بل معرفة الأبحاث والمراجع التي تستند إليها الإجابة."
+                    data-en="The goal is not just to receive an answer, but to see the research and references behind it."
+                >
+                    الفكرة ليست الحصول على إجابة فقط،
+                    بل معرفة الأبحاث والمراجع التي
+                    تستند إليها الإجابة.
+                </p>
+
+            </article>
+
+
+            <!-- 03 -->
+
+            <article class="why-card">
+
+                <span class="why-number">
+                    03
+                </span>
+
+                <h3
+                    data-ar="العربية جزء أساسي من المنصة"
+                    data-en="Arabic Is a Core Part of the Platform"
+                >
+                    العربية جزء أساسي من المنصة
+                </h3>
+
+                <p
+                    data-ar="BA مصمم ليعمل بالعربية والإنجليزية مع اهتمام خاص بالحفاظ على معنى المصطلحات والسياق العلمي أثناء الترجمة."
+                    data-en="BA is designed for both Arabic and English, with particular attention to preserving scientific terminology and context during translation."
+                >
+                    BA مصمم ليعمل بالعربية والإنجليزية
+                    مع اهتمام خاص بالحفاظ على معنى المصطلحات
+                    والسياق العلمي أثناء الترجمة.
+                </p>
+
+            </article>
+
+
+            <!-- 04 -->
+
+            <article class="why-card">
+
+                <span class="why-number">
+                    04
+                </span>
+
+                <h3
+                    data-ar="المعرفة مرتبطة بأصحابها"
+                    data-en="Knowledge Connected to People"
+                >
+                    المعرفة مرتبطة بأصحابها
+                </h3>
+
+                <p
+                    data-ar="اكتشف الباحث خلف الورقة، تابع أعماله، واطلع على اهتماماته وملاحظاته العلمية."
+                    data-en="Discover the researcher behind the paper, follow their work, and explore their interests and scientific notes."
+                >
+                    اكتشف الباحث خلف الورقة،
+                    تابع أعماله، واطلع على اهتماماته
+                    وملاحظاته العلمية.
+                </p>
+
+            </article>
+
+        </div>
+
+
+        <!-- CORE LOOP -->
+
+        <div class="ba-loop">
+
+            <span
+                class="loop-title"
+                data-ar="رحلة المعرفة داخل BA"
+                data-en="The Knowledge Journey Inside BA"
+            >
+                رحلة المعرفة داخل BA
+            </span>
+
+
+            <div class="loop-items">
+
+                <div>
+                    <span>01</span>
+
+                    <strong
+                        data-ar="اكتشف"
+                        data-en="Discover"
+                    >
+                        اكتشف
+                    </strong>
+                </div>
+
+
+                <div class="loop-arrow">
+                    →
+                </div>
+
+
+                <div>
+                    <span>02</span>
+
+                    <strong
+                        data-ar="افهم"
+                        data-en="Understand"
+                    >
+                        افهم
+                    </strong>
+                </div>
+
+
+                <div class="loop-arrow">
+                    →
+                </div>
+
+
+                <div>
+                    <span>03</span>
+
+                    <strong
+                        data-ar="احفظ"
+                        data-en="Save"
+                    >
+                        احفظ
+                    </strong>
+                </div>
+
+
+                <div class="loop-arrow">
+                    →
+                </div>
+
+
+                <div>
+                    <span>04</span>
+
+                    <strong
+                        data-ar="أضف معرفتك"
+                        data-en="Add Insight"
+                    >
+                        أضف معرفتك
+                    </strong>
+                </div>
+
+
+                <div class="loop-arrow">
+                    →
+                </div>
+
+
+                <div>
+                    <span>05</span>
+
+                    <strong
+                        data-ar="انشر"
+                        data-en="Publish"
+                    >
+                        انشر
+                    </strong>
+                </div>
+
+
+                <div class="loop-arrow">
+                    →
+                </div>
+
+
+                <div>
+                    <span>06</span>
+
+                    <strong
+                        data-ar="تواصل"
+                        data-en="Connect"
+                    >
+                        تواصل
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     JOIN BA
+========================== -->
+
+<section class="section join-ba" id="join">
+
+    <div class="container">
+
+        <div class="join-box">
+
+            <span
+                class="section-label"
+                data-ar="انضم إلى BA"
+                data-en="Join BA"
+            >
+                انضم إلى BA
+            </span>
+
+            <h2>
+                <span
+                    data-ar="ابدأ ببناء"
+                    data-en="Start Building"
+                >
+                    ابدأ ببناء
+                </span>
+
+                <br>
+
+                <span
+                    data-ar="هويتك العلمية اليوم"
+                    data-en="Your Scientific Identity Today"
+                >
+                    هويتك العلمية اليوم
+                </span>
+            </h2>
+
+            <p
+                data-ar="أنشئ حسابك، استكشف الأبحاث، افهم الأوراق العلمية، احفظ ملاحظاتك، وشارك معرفتك داخل مجتمع علمي واحد."
+                data-en="Create your account, explore research, understand scientific papers, save your notes, and share your knowledge within one scientific community."
+            >
+                أنشئ حسابك، استكشف الأبحاث، افهم الأوراق العلمية،
+                احفظ ملاحظاتك، وشارك معرفتك داخل مجتمع علمي واحد.
+            </p>
+
+
+            <div class="join-actions">
+
+                <a
+                    href="./signup.html"
+                    class="btn btn-primary join-main-button"
+                    data-ar="انضم إلى BA"
+                    data-en="Join BA"
+                >
+                    انضم إلى BA
+                </a>
+
+                <a
+                    href="#research-ai"
+                    class="btn btn-secondary"
+                    data-ar="استكشف المنصة"
+                    data-en="Explore the Platform"
+                >
+                    استكشف المنصة
+                </a>
+
+            </div>
+
+
+            <div class="join-details">
+
+                <span
+                    data-ar="التسجيل متاح للجميع"
+                    data-en="Open Registration"
+                >
+                    التسجيل متاح للجميع
+                </span>
+
+                <span
+                    data-ar="العربية والإنجليزية"
+                    data-en="Arabic & English"
+                >
+                    العربية والإنجليزية
+                </span>
+
+                <span
+                    data-ar="ملف علمي شخصي"
+                    data-en="Scientific Profile"
+                >
+                    ملف علمي شخصي
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <div class="footer-main">
+
+
+            <div class="footer-brand">
+
+                <a
+                href="#home"
+                class="footer-logo"
+                aria-label="BA Home"
+>
+                <img
+                src="./images/logo.svg"
+                alt="BA"
+    >
+</a>
+
+                <p
+                    data-ar="منصة علمية تجمع البحث، المعرفة، الباحثين والأدوات الذكية في مكان واحد."
+                    data-en="A scientific platform bringing research, knowledge, researchers, and intelligent tools together in one place."
+                >
+                    منصة علمية تجمع البحث، المعرفة،
+                    الباحثين والأدوات الذكية في مكان واحد.
+                </p>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3
+                    data-ar="استكشف"
+                    data-en="Explore"
+                >
+                    استكشف
+                </h3>
+
+                <a
+                    href="#research-ai"
+                    data-ar="BA Research AI"
+                    data-en="BA Research AI"
+                >
+                    BA Research AI
+                </a>
+
+                <a
+                    href="#paper-intelligence"
+                    data-ar="فهم الأبحاث"
+                    data-en="Paper Intelligence"
+                >
+                    فهم الأبحاث
+                </a>
+
+                <a
+                    href="#researchers"
+                    data-ar="الباحثون"
+                    data-en="Researchers"
+                >
+                    الباحثون
+                </a>
+
+                <a
+                    href="#articles"
+                    data-ar="المحتوى العلمي"
+                    data-en="Scientific Content"
+                >
+                    المحتوى العلمي
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3
+                    data-ar="BA"
+                    data-en="BA"
+                >
+                    BA
+                </h3>
+
+                <a
+                    href="#about"
+                    data-ar="من نحن"
+                    data-en="About"
+                >
+                    من نحن
+                </a>
+
+                <a
+                    href="./signup.html"
+                    data-ar="انضم إلى BA"
+                    data-en="Join BA"
+                >
+                    انضم إلى BA
+                </a>
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    data-ar="تواصل معنا"
+                    data-en="Contact"
+                >
+                    تواصل معنا
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-column">
+
+                <h3
+                    data-ar="قانوني"
+                    data-en="Legal"
+                >
+                    قانوني
+                </h3>
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    data-ar="سياسة الخصوصية"
+                    data-en="Privacy Policy"
+                >
+                    سياسة الخصوصية
+                </a>
+
+                <a
+                    data-prototype="true"
+                    aria-disabled="true"
+                    tabindex="-1"
+                    data-ar="شروط الاستخدام"
+                    data-en="Terms of Use"
+                >
+                    شروط الاستخدام
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 BA
+            </span>
+
+            <span
+                data-ar="Science • Research • Knowledge"
+                data-en="Science • Research • Knowledge"
+            >
+                Science • Research • Knowledge
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+    <!--
+        main.js contains only public UI behavior:
+        navigation, language switching and scroll effects.
+        No secrets or authentication logic belong in it.
+    -->
+    <script src="./js/main.js"></script>
+
+</body>
+
 </html>

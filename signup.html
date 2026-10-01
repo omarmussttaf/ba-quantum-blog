@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- =====================================================
+         BA PROJECT
+         File: signup.html
+
+         Purpose:
+         Registration page for new BA users.
+
+         Handles:
+         - Full name
+         - Email
+         - Password
+         - Account type
+         - Scientific field
+         - Arabic / English interface
+
+         Security Notes:
+         - HTML validation improves UX only.
+         - Supabase Auth handles passwords.
+         - auth.js performs additional validation.
+         - Database security is enforced through RLS.
+         - No secret API keys belong in this page.
+    ====================================================== -->
+
+
+    <!-- =========================
+         BASIC META
+    ========================= -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <!--
+        Privacy:
+        Avoid sending the full BA page URL as a referrer
+        when navigating to external sites.
+    -->
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+
+    <title>
+        BA | إنشاء حساب
+    </title>
+
+
+
+    <!-- =========================
+         FONTS
+    ========================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- =========================
+     BA STYLES
+========================= -->
+
+
+
+
+    <!-- BA STYLES -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/auth.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         AUTH PAGE
+    ========================= -->
+
+    <main class="auth-page">
+
+
+        <div class="auth-wrapper">
+
+
+
+            <!-- =========================
+                 BRAND PANEL
+            ========================= -->
+
+            <section
+                class="auth-brand-panel"
+                aria-label="BA"
+            >
+
+
+                <a
+                    href="./index.html"
+                    class="auth-logo"
+                    aria-label="BA Home"
+                >
+
+                    <img
+                        src="./images/logo.svg"
+                        alt="BA"
+                    >
+
+                </a>
+
+
+
+                <div class="auth-brand-content">
+
+
+                    <span
+                        class="section-label"
+                        data-ar="ابدأ رحلتك العلمية"
+                        data-en="Start Your Scientific Journey"
+                    >
+                        ابدأ رحلتك العلمية
+                    </span>
+
+
+
+                    <h1
+                        data-ar="انضم إلى مجتمع BA"
+                        data-en="Join the BA Community"
+                    >
+                        انضم إلى مجتمع BA
+                    </h1>
+
+
+
+                    <p
+                        data-ar="أنشئ ملفك العلمي، استكشف الأبحاث، احفظ ملاحظاتك وشارك معرفتك مع الآخرين."
+                        data-en="Build your scientific profile, explore research, save your notes, and share your knowledge with others."
+                    >
+                        أنشئ ملفك العلمي،
+                        استكشف الأبحاث،
+                        احفظ ملاحظاتك وشارك معرفتك مع الآخرين.
+                    </p>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 SIGNUP FORM PANEL
+            ========================= -->
+
+            <section class="auth-form-panel">
+
+
+                <div class="auth-form-box">
+
+
+
+                    <!-- =========================
+                         FORM HEADER
+                    ========================= -->
+
+                    <div class="auth-top">
+
+
+                        <div>
+
+                            <span
+                                data-ar="BA"
+                                data-en="BA"
+                            >
+                                BA
+                            </span>
+
+
+                            <h2
+                                data-ar="إنشاء حساب"
+                                data-en="Create Account"
+                            >
+                                إنشاء حساب
+                            </h2>
+
+                        </div>
+
+
+
+                        <!--
+                            JavaScript changes this button
+                            between Arabic and English.
+                        -->
+
+                        <button
+                            class="language-button"
+                            id="languageButton"
+                            type="button"
+                            aria-label="Switch to English"
+                        >
+                            EN
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!-- =========================
+                         SIGNUP FORM
+                    ========================= -->
+
+                    <form
+                        class="auth-form"
+                        id="signupForm"
+                        autocomplete="on"
+                    >
+
+
+
+                        <!-- =========================
+                             FULL NAME
+                        ========================= -->
+
+                        <div class="form-group">
+
+
+                            <label
+                                for="fullName"
+                                data-ar="الاسم الكامل"
+                                data-en="Full Name"
+                            >
+                                الاسم الكامل
+                            </label>
+
+
+                            <input
+                                type="text"
+
+                                id="fullName"
+                                name="fullName"
+
+                                required
+
+                                minlength="2"
+                                maxlength="120"
+
+                                autocomplete="name"
+
+                                placeholder="عمر مصطفى"
+
+                                data-placeholder-ar="عمر مصطفى"
+                                data-placeholder-en="Omar Musttaf"
+                            >
+
+
+                        </div>
+
+
+
+                        <!-- =========================
+                             EMAIL
+                        ========================= -->
+
+                        <div class="form-group">
+
+
+                            <label
+                                for="email"
+                                data-ar="البريد الإلكتروني"
+                                data-en="Email Address"
+                            >
+                                البريد الإلكتروني
+                            </label>
+
+
+                            <input
+                                type="email"
+
+                                id="email"
+                                name="email"
+
+                                required
+
+                                maxlength="254"
+
+                                autocomplete="email"
+
+                                inputmode="email"
+
+                                autocapitalize="none"
+
+                                spellcheck="false"
+
+                                placeholder="name@example.com"
+                            >
+
+
+                        </div>
+
+
+
+                        <!-- =========================
+                             PASSWORD
+                        ========================= -->
+
+                        <div class="form-group">
+
+
+                            <label
+                                for="password"
+                                data-ar="كلمة المرور"
+                                data-en="Password"
+                            >
+                                كلمة المرور
+                            </label>
+
+
+                            <input
+                                type="password"
+
+                                id="password"
+                                name="password"
+
+                                required
+
+                                minlength="8"
+                                maxlength="128"
+
+                                autocomplete="new-password"
+
+                                placeholder="••••••••"
+                            >
+
+
+                            <!--
+                                This matches the current BA v0.1
+                                password rule in auth.js.
+
+                                It is NOT the security boundary.
+                                Supabase Auth remains authoritative.
+                            -->
+
+                            <small
+                                class="form-help"
+                                data-ar="استخدم 8 أحرف على الأقل."
+                                data-en="Use at least 8 characters."
+                            >
+                                استخدم 8 أحرف على الأقل.
+                            </small>
+
+
+                        </div>
+
+
+
+                        <!-- =========================
+                             ACCOUNT TYPE
+                        ========================= -->
+
+                        <div class="form-group">
+
+
+                            <label
+                                for="accountType"
+                                data-ar="نوع الحساب"
+                                data-en="Account Type"
+                            >
+                                نوع الحساب
+                            </label>
+
+
+                            <select
+                                id="accountType"
+                                name="accountType"
+                                required
+                            >
+
+
+                                <option
+                                    value=""
+                                    selected
+                                    disabled
+
+                                    data-ar="اختر نوع الحساب"
+                                    data-en="Select Account Type"
+                                >
+                                    اختر نوع الحساب
+                                </option>
+
+
+                                <option
+                                    value="student"
+                                    data-ar="طالب"
+                                    data-en="Student"
+                                >
+                                    طالب
+                                </option>
+
+
+                                <option
+                                    value="researcher"
+                                    data-ar="باحث"
+                                    data-en="Researcher"
+                                >
+                                    باحث
+                                </option>
+
+
+                                <option
+                                    value="professor"
+                                    data-ar="أستاذ"
+                                    data-en="Professor"
+                                >
+                                    أستاذ
+                                </option>
+
+
+                                <option
+                                    value="engineer"
+                                    data-ar="مهندس"
+                                    data-en="Engineer"
+                                >
+                                    مهندس
+                                </option>
+
+
+                                <option
+                                    value="professional"
+                                    data-ar="متخصص"
+                                    data-en="Professional"
+                                >
+                                    متخصص
+                                </option>
+
+
+                                <option
+                                    value="science-enthusiast"
+                                    data-ar="مهتم بالعلم"
+                                    data-en="Science Enthusiast"
+                                >
+                                    مهتم بالعلم
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+                        <!-- =========================
+                             SCIENTIFIC FIELD
+                        ========================= -->
+
+                        <div class="form-group">
+
+
+                            <label
+                                for="field"
+                                data-ar="مجالك العلمي"
+                                data-en="Scientific Field"
+                            >
+                                مجالك العلمي
+                            </label>
+
+
+                            <select
+                                id="field"
+                                name="field"
+                                required
+                            >
+
+
+                                <option
+                                    value=""
+                                    selected
+                                    disabled
+
+                                    data-ar="اختر المجال"
+                                    data-en="Select Field"
+                                >
+                                    اختر المجال
+                                </option>
+
+
+                                <option
+                                    value="physics"
+                                    data-ar="الفيزياء"
+                                    data-en="Physics"
+                                >
+                                    الفيزياء
+                                </option>
+
+
+                                <option
+                                    value="computer-science"
+                                    data-ar="علوم الحاسوب"
+                                    data-en="Computer Science"
+                                >
+                                    علوم الحاسوب
+                                </option>
+
+
+                                <option
+                                    value="engineering"
+                                    data-ar="الهندسة"
+                                    data-en="Engineering"
+                                >
+                                    الهندسة
+                                </option>
+
+
+                                <option
+                                    value="biology"
+                                    data-ar="الأحياء"
+                                    data-en="Biology"
+                                >
+                                    الأحياء
+                                </option>
+
+
+                                <option
+                                    value="medicine"
+                                    data-ar="الطب"
+                                    data-en="Medicine"
+                                >
+                                    الطب
+                                </option>
+
+
+                                <option
+                                    value="other"
+                                    data-ar="مجال آخر"
+                                    data-en="Other"
+                                >
+                                    مجال آخر
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+                        <!-- =========================
+                             SUBMIT
+                        ========================= -->
+
+                        <button
+                            type="submit"
+                            class="auth-submit"
+
+                            data-ar="إنشاء الحساب"
+                            data-en="Create Account"
+                        >
+                            إنشاء الحساب
+                        </button>
+
+
+                    </form>
+
+
+
+                    <!-- =========================
+                         LOGIN LINK
+                    ========================= -->
+
+                    <p class="auth-switch">
+
+
+                        <span
+                            data-ar="لديك حساب بالفعل؟"
+                            data-en="Already have an account?"
+                        >
+                            لديك حساب بالفعل؟
+                        </span>
+
+
+                        <a
+                            href="./login.html"
+
+                            data-ar="تسجيل الدخول"
+                            data-en="Sign In"
+                        >
+                            تسجيل الدخول
+                        </a>
+
+
+                    </p>
+
+
+
+                    <!-- =========================
+                         BACK HOME
+                    ========================= -->
+
+                    <a
+                        href="./index.html"
+
+                        class="back-home"
+
+                        data-ar="العودة إلى الصفحة الرئيسية"
+                        data-en="Back to Home"
+                    >
+                        العودة إلى الصفحة الرئيسية
+                    </a>
+
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+
+         IMPORTANT ORDER:
+
+         1. Supabase official SDK
+         2. BA Supabase client
+         3. BA authentication logic
+
+         Do not change this order unless the architecture
+         changes.
+    ====================================================== -->
+
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/auth.js"
+    ></script>
+
+
+</body>
+
+</html>

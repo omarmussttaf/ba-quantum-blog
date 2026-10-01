@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- =====================================================
+         BA PROJECT
+         File: profile.html
+
+         Purpose:
+         Private scientific profile dashboard for the
+         currently authenticated BA user.
+
+         Displays:
+         - Avatar
+         - Name
+         - Email
+         - Account type
+         - Scientific field
+         - Bio
+         - Scientific interests
+         - Institution
+         - Location
+         - ORCID
+         - Website
+         - Dashboard statistics
+         - Saved scientific papers
+
+         Security Notes:
+         - This is a private authenticated page.
+         - profile.js verifies the current Supabase session.
+         - Supabase RLS must enforce data authorization.
+         - Email shown here is for the account owner only.
+         - This page must NOT be used directly as the future
+           public researcher profile page.
+    ====================================================== -->
+
+
+    <!-- =========================
+         BASIC META
+    ========================= -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+
+    <title>
+        BA | الملف العلمي
+    </title>
+
+
+    <!-- =========================
+         FONTS
+    ========================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================
+     BA STYLES
+========================= -->
+
+
+
+
+    <!-- BA STYLES -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/profile.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         PROFILE HEADER
+    ====================================================== -->
+
+    <header class="profile-page-header">
+
+        <div class="container profile-page-nav">
+
+
+            <!-- =========================
+                 BA LOGO
+            ========================= -->
+
+            <a
+                href="./index.html"
+                class="logo"
+                aria-label="BA Home"
+            >
+
+                <img
+                    src="./images/logo.svg"
+                    alt="BA"
+                >
+
+            </a>
+
+
+            <!-- =========================
+                 PROFILE ACTIONS
+            ========================= -->
+
+            <div class="profile-nav-actions">
+
+
+                <button
+                    class="language-button"
+                    id="languageButton"
+                    type="button"
+                    aria-label="Switch to English"
+                >
+                    EN
+                </button>
+
+
+                <button
+                    class="logout-button"
+                    id="logoutButton"
+                    type="button"
+                    data-ar="تسجيل الخروج"
+                    data-en="Log Out"
+                >
+                    تسجيل الخروج
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PROFILE PAGE
+    ====================================================== -->
+
+    <main class="profile-page">
+
+        <div class="container">
+
+
+            <!-- =================================================
+                 SCIENTIFIC PROFILE CARD
+            ================================================== -->
+
+            <section
+                class="user-profile-card"
+                aria-labelledby="profileName"
+            >
+
+
+                <!-- Decorative profile cover -->
+
+                <div
+                    class="user-profile-cover"
+                    aria-hidden="true"
+                ></div>
+
+
+                <div class="user-profile-content">
+
+
+                    <!-- =========================
+                         AVATAR + EDIT BUTTON
+                    ========================= -->
+
+                    <div class="user-profile-top">
+
+
+                        <div
+                            class="user-profile-avatar"
+                            id="profileAvatar"
+                        >
+
+                            <img
+                                id="profileAvatarImage"
+                                src=""
+                                alt="Profile Avatar"
+                            >
+
+                            <span
+                                id="profileAvatarInitials"
+                                aria-hidden="true"
+                            >
+                                BA
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="./edit-profile.html"
+                            class="edit-profile-button"
+                            data-ar="تعديل الملف"
+                            data-en="Edit Profile"
+                        >
+                            تعديل الملف
+                        </a>
+
+
+                    </div>
+
+
+                    <!-- =========================
+                         USER IDENTITY
+                    ========================= -->
+
+                    <div class="user-profile-identity">
+
+
+                        <h1 id="profileName">
+                            ...
+                        </h1>
+
+
+                        <span
+                            class="user-profile-role"
+                            id="profileRole"
+                        >
+                            ...
+                        </span>
+
+
+                        <span
+                            class="user-profile-email"
+                            id="profileEmail"
+                        >
+                            ...
+                        </span>
+
+
+                    </div>
+
+
+                    <!-- =========================
+                         BASIC PROFILE INFORMATION
+                    ========================= -->
+
+                    <div class="user-profile-info-grid">
+
+
+                        <div>
+
+                            <span
+                                data-ar="نوع الحساب"
+                                data-en="Account Type"
+                            >
+                                نوع الحساب
+                            </span>
+
+                            <strong id="profileAccountType">
+                                ...
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span
+                                data-ar="المجال العلمي"
+                                data-en="Scientific Field"
+                            >
+                                المجال العلمي
+                            </span>
+
+                            <strong id="profileField">
+                                ...
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span
+                                data-ar="الحالة"
+                                data-en="Status"
+                            >
+                                الحالة
+                            </span>
+
+                            <strong
+                                data-ar="عضو في BA"
+                                data-en="BA Member"
+                            >
+                                عضو في BA
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- =================================================
+                         EXTENDED PROFILE DETAILS
+                    ================================================== -->
+
+                    <section
+                        class="profile-details"
+                        aria-label="Scientific Profile Details"
+                    >
+
+
+                        <!-- =========================
+                             BIO
+                        ========================= -->
+
+                        <div class="profile-detail-block">
+
+                            <span
+                                data-ar="نبذة"
+                                data-en="Bio"
+                            >
+                                نبذة
+                            </span>
+
+                            <p id="profileBio">
+                                -
+                            </p>
+
+                        </div>
+
+
+                        <!-- =========================
+                             SCIENTIFIC INTERESTS
+                        ========================= -->
+
+                        <div class="profile-detail-block">
+
+                            <span
+                                data-ar="الاهتمامات العلمية"
+                                data-en="Scientific Interests"
+                            >
+                                الاهتمامات العلمية
+                            </span>
+
+                            <div
+                                class="profile-interests-display"
+                                id="profileInterests"
+                            >
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================
+                             ADDITIONAL INFORMATION
+                        ========================= -->
+
+                        <div class="profile-detail-grid">
+
+
+                            <!-- Institution -->
+
+                            <div>
+
+                                <span
+                                    data-ar="المؤسسة"
+                                    data-en="Institution"
+                                >
+                                    المؤسسة
+                                </span>
+
+                                <strong id="profileInstitution">
+                                    -
+                                </strong>
+
+                            </div>
+
+
+                            <!-- Location -->
+
+                            <div>
+
+                                <span
+                                    data-ar="الموقع"
+                                    data-en="Location"
+                                >
+                                    الموقع
+                                </span>
+
+                                <strong id="profileLocation">
+                                    -
+                                </strong>
+
+                            </div>
+
+
+                            <!-- ORCID -->
+
+                            <div>
+
+                                <span>
+                                    ORCID
+                                </span>
+
+                                <strong id="profileOrcid">
+                                    -
+                                </strong>
+
+                            </div>
+
+
+                            <!-- Personal website -->
+
+                            <div>
+
+                                <span
+                                    data-ar="الموقع الشخصي"
+                                    data-en="Website"
+                                >
+                                    الموقع الشخصي
+                                </span>
+
+                                <a id="profileWebsite">
+                                    -
+                                </a>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </section>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROFILE DASHBOARD
+            ================================================== -->
+
+            <section
+                class="profile-dashboard"
+                aria-label="Profile Dashboard"
+            >
+
+
+                <!-- =========================
+                     SAVED RESEARCH
+                ========================= -->
+
+                <a
+    href="./library.html"
+    class="dashboard-card dashboard-card-link"
+    aria-label="Open Scientific Library"
+>
+
+    <span aria-hidden="true">
+        01
+    </span>
+
+    <h3
+        data-ar="الأبحاث المحفوظة"
+        data-en="Saved Research"
+    >
+        الأبحاث المحفوظة
+    </h3>
+
+    <strong id="savedResearchCount">
+        0
+    </strong>
+
+</a>
+
+
+                <!-- =========================
+                     RESEARCH NOTES
+                ========================= -->
+
+                <div class="dashboard-card">
+
+                    <span aria-hidden="true">
+                        02
+                    </span>
+
+                    <h3
+                        data-ar="الملاحظات البحثية"
+                        data-en="Research Notes"
+                    >
+                        الملاحظات البحثية
+                    </h3>
+
+                    <strong id="researchNotesCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <!-- =========================
+                     ARTICLES
+                ========================= -->
+
+                <div class="dashboard-card">
+
+                    <span aria-hidden="true">
+                        03
+                    </span>
+
+                    <h3
+                        data-ar="المقالات"
+                        data-en="Articles"
+                    >
+                        المقالات
+                    </h3>
+
+                    <strong id="articlesCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <!-- =========================
+                     COLLECTIONS
+                ========================= -->
+
+                <div class="dashboard-card">
+
+                    <span aria-hidden="true">
+                        04
+                    </span>
+
+                    <h3
+                        data-ar="المجموعات"
+                        data-en="Collections"
+                    >
+                        المجموعات
+                    </h3>
+
+                    <strong id="collectionsCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 SCIENTIFIC LIBRARY
+
+                 IMPORTANT:
+                 This section is intentionally OUTSIDE
+                 profile-dashboard.
+
+                 The dashboard above contains only statistics.
+                 The library below is full-width content.
+            ====================================================== -->
+
+            <section
+                class="profile-library"
+                aria-labelledby="savedResearchLibraryTitle"
+            >
+
+
+                <div class="profile-library-header">
+
+
+                    <div>
+
+                        <span
+                            class="section-label"
+                            data-ar="المكتبة العلمية"
+                            data-en="Scientific Library"
+                        >
+                            المكتبة العلمية
+                        </span>
+
+
+                        <h2
+                            id="savedResearchLibraryTitle"
+                            data-ar="الأبحاث المحفوظة"
+                            data-en="Saved Research"
+                        >
+                            الأبحاث المحفوظة
+                        </h2>
+
+                    </div>
+
+
+                    <a
+    href="./library.html"
+    class="profile-library-search-link"
+    data-ar="فتح المكتبة"
+    data-en="Open Library"
+>
+    فتح المكتبة
+</a>
+
+
+                </div>
+
+
+                <!-- =========================
+                     LIBRARY STATUS
+                ========================= -->
+
+                <div
+                    id="savedPapersStatus"
+                    class="saved-papers-status"
+                    aria-live="polite"
+                >
+                </div>
+
+
+                <!-- =========================
+                     SAVED PAPERS
+
+                     profile.js creates the paper cards
+                     inside this container.
+                ========================= -->
+
+                <div
+                    id="savedPapersList"
+                    class="saved-papers-list"
+                >
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+
+         Loading order:
+
+         1. Official Supabase SDK
+         2. BA Supabase client
+         3. Protected profile logic
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/supabase.js"
+    ></script>
+
+
+    <script
+        src="./js/profile.js"
+    ></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <!-- =====================================================
+         BA PROJECT
+         File: research.html
+
+         Purpose:
+         Scientific research discovery page.
+
+         Current Features:
+         - Search scientific works
+         - Arabic / English interface
+         - Research result cards
+         - Loading state
+         - Empty state
+         - Error state
+
+         Data Source:
+         - OpenAlex API
+
+         Security Notes:
+         - No private API keys belong in this file.
+         - OpenAlex requests are currently public client-side requests.
+         - User input must never be inserted with innerHTML.
+         - Future private/AI APIs must go through BA backend.
+    ====================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin"
+    >
+
+    <title>
+        BA | البحث العلمي
+    </title>
+
+
+    <!-- =========================
+         FONTS
+    ========================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================
+     BA STYLES
+========================= -->
+
+
+
+
+    <!-- BA STYLES -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/research.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="research-page-header">
+
+        <div class="container research-page-nav">
+
+            <a
+                href="./index.html"
+                class="logo"
+                aria-label="BA Home"
+            >
+
+                <img
+                    src="./images/logo.svg"
+                    alt="BA"
+                >
+
+            </a>
+
+
+            <div class="research-nav-actions">
+
+                <a
+                    href="./index.html"
+                    class="research-home-link"
+                    data-ar="الرئيسية"
+                    data-en="Home"
+                >
+                    الرئيسية
+                </a>
+
+
+                <a
+                    href="./profile.html"
+                    class="research-profile-link"
+                    data-ar="ملفي العلمي"
+                    data-en="My Profile"
+                >
+                    ملفي العلمي
+                </a>
+
+
+                <button
+                    class="language-button"
+                    id="languageButton"
+                    type="button"
+                    aria-label="Switch to English"
+                >
+                    EN
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN RESEARCH PAGE
+    ====================================================== -->
+
+    <main class="research-page">
+
+        <div class="container research-container">
+
+
+            <!-- =========================
+                 PAGE INTRO
+            ========================= -->
+
+            <section class="research-intro">
+
+                <span
+                    class="section-label"
+                    data-ar="BA Research"
+                    data-en="BA Research"
+                >
+                    BA Research
+                </span>
+
+
+                <h1
+                    data-ar="ابحث في المعرفة العلمية"
+                    data-en="Search Scientific Knowledge"
+                >
+                    ابحث في المعرفة العلمية
+                </h1>
+
+
+                <p
+                    data-ar="اكتشف الأوراق العلمية والباحثين والمصادر الأكاديمية من خلال بحث واحد."
+                    data-en="Discover scientific papers, researchers, and academic sources through one search."
+                >
+                    اكتشف الأوراق العلمية والباحثين
+                    والمصادر الأكاديمية من خلال بحث واحد.
+                </p>
+
+            </section>
+
+
+
+            <!-- =========================
+                 SEARCH FORM
+            ========================= -->
+
+            <section class="research-search-section">
+
+                <form
+                    id="researchSearchForm"
+                    class="research-search-form"
+                    role="search"
+                >
+
+                    <label
+                        for="researchSearchInput"
+                        class="research-search-label"
+                        data-ar="ما الذي تريد البحث عنه؟"
+                        data-en="What would you like to research?"
+                    >
+                        ما الذي تريد البحث عنه؟
+                    </label>
+
+
+                    <div class="research-search-row">
+
+                        <input
+                            type="search"
+                            id="researchSearchInput"
+                            name="query"
+
+                            required
+                            maxlength="300"
+
+                            autocomplete="off"
+
+                            data-placeholder-ar="ابحث عن ورقة علمية، موضوع، أو مفهوم..."
+                            data-placeholder-en="Search for a paper, topic, or concept..."
+                        >
+
+
+                        <button
+                            type="submit"
+                            id="researchSearchButton"
+                            class="btn btn-primary"
+
+                            data-ar="بحث"
+                            data-en="Search"
+                        >
+                            بحث
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+
+            <!-- =========================
+                 SEARCH INFORMATION
+            ========================= -->
+
+            <section
+                class="research-status"
+                aria-live="polite"
+            >
+
+                <p
+                    id="researchStatusMessage"
+                >
+                </p>
+
+            </section>
+
+
+
+            <!-- =========================
+                 RESULTS
+            ========================= -->
+
+            <section
+                class="research-results-section"
+                aria-labelledby="researchResultsTitle"
+            >
+
+                <div class="research-results-header">
+
+                    <h2
+                        id="researchResultsTitle"
+                        data-ar="نتائج البحث"
+                        data-en="Research Results"
+                    >
+                        نتائج البحث
+                    </h2>
+
+
+                    <span
+                        id="researchResultsCount"
+                    >
+                    </span>
+
+                </div>
+
+
+                <div class="research-ranking-bar">
+
+                    <div class="research-ranking-control">
+
+                        <label
+                            for="researchSort"
+                            data-ar="ترتيب النتائج"
+                            data-en="Sort results"
+                        >
+                            ترتيب النتائج
+                        </label>
+
+                        <select id="researchSort">
+                            <option value="top" data-ar="BA Top" data-en="BA Top">BA Top</option>
+                            <option value="relevance" data-ar="الأكثر صلة" data-en="Most Relevant">الأكثر صلة</option>
+                            <option value="cited" data-ar="الأكثر استشهادًا" data-en="Most Cited">الأكثر استشهادًا</option>
+                            <option value="newest" data-ar="الأحدث" data-en="Newest">الأحدث</option>
+                            <option value="open-access" data-ar="الوصول المفتوح" data-en="Open Access">الوصول المفتوح</option>
+                        </select>
+
+                    </div>
+
+                    <p
+                        class="research-ranking-note"
+                        data-ar="BA Score يرتب النتائج حسب صلة البحث، الاستشهادات، الحداثة، الوصول المفتوح، اكتمال البيانات، وتوافق أكثر من مصدر. لا يمثل تقييمًا لجودة البحث العلمية."
+                        data-en="BA Score ranks results using query relevance, citations, recency, open access, metadata completeness, and agreement across sources. It is not a scientific-quality rating."
+                    >
+                        BA Score يرتب النتائج حسب صلة البحث، الاستشهادات، الحداثة،
+                        الوصول المفتوح، اكتمال البيانات، وتوافق أكثر من مصدر.
+                        لا يمثل تقييمًا لجودة البحث العلمية.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="researchResults"
+                    class="research-results"
+                >
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 LOAD MORE
+            ========================= -->
+
+            <div
+                class="research-load-more"
+                id="researchLoadMoreContainer"
+                hidden
+            >
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="researchLoadMoreButton"
+
+                    data-ar="عرض المزيد"
+                    data-en="Load More"
+                >
+                    عرض المزيد
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+
+         BA Search v0.2 uses a Supabase Edge Function to
+         aggregate multiple scientific sources safely.
+
+         research.js handles:
+         - language
+         - multi-source search
+         - BA ranking
+         - sorting
+         - local pagination
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"
+    ></script>
+
+    <script
+        src="./js/supabase.js"
+    ></script>
+
+    <script
+        src="./js/research.js"
+    ></script>
+
+
+</body>
+
+</html>

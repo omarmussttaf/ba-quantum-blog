@@ -1,0 +1,375 @@
+/* =========================================================
+   BA PROJECT
+   File: paper.css
+
+   Purpose:
+   Scientific paper detail page.
+
+   Used by:
+   - paper.html
+
+   Depends on:
+   - base.css
+   - components.css
+   - research.css (currently only for the shared research-page header classes)
+
+   Contains:
+   - Paper detail layout
+   - Paper metadata
+   - Abstract / content sections
+   - Topics
+   - Source / save actions
+   - Saved state
+   - Responsive rules
+
+   Audit status:
+   - Rebuilt from the original style.css paper-detail rules.
+   - Later saved-state rules are preserved.
+   - Shared research header rules are intentionally not duplicated here.
+========================================================= */
+
+
+/* =========================================================
+   BA PAPER DETAIL PAGE
+========================================================= */
+
+.paper-detail-page {
+    min-height: 100vh;
+
+    padding:
+        80px 0
+        120px;
+
+    background:
+        radial-gradient(
+            circle at 78% 10%,
+            rgba(177, 18, 38, 0.11),
+            transparent 28%
+        ),
+        #050505;
+}
+
+
+.paper-detail-container {
+    max-width: 1100px;
+}
+
+
+.paper-detail-status {
+    min-height: 40px;
+
+    color: #888;
+
+    font-size: 13px;
+}
+
+
+.paper-detail-card {
+    padding: 42px;
+
+    border:
+        1px solid #292929;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d0d0d,
+            #070707
+        );
+
+    box-shadow:
+        0 35px 100px
+        rgba(0, 0, 0, 0.4);
+}
+
+
+.paper-detail-card[hidden] {
+    display: none;
+}
+
+
+.paper-detail-top {
+    margin-bottom: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content:
+        space-between;
+
+    gap: 20px;
+}
+
+
+.paper-detail-type {
+    padding:
+        5px 11px;
+
+    border:
+        1px solid
+        rgba(177, 18, 38, 0.4);
+
+    border-radius: 20px;
+
+    color:
+        var(--red-light);
+
+    font-size: 10px;
+}
+
+
+.paper-detail-top > span:last-child {
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+.paper-detail-card > h1 {
+    max-width: 950px;
+
+    margin-bottom: 18px;
+
+    font-size:
+        clamp(
+            34px,
+            5vw,
+            56px
+        );
+
+    line-height: 1.4;
+}
+
+
+html[dir="rtl"]
+.paper-detail-card > h1 {
+    line-height: 1.55;
+}
+
+
+.paper-detail-authors {
+    margin-bottom: 8px;
+
+    color: #b0b0b0;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+.paper-detail-source {
+    margin-bottom: 28px;
+
+    color: #727272;
+
+    font-size: 12px;
+}
+
+
+.paper-detail-meta {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 42px;
+}
+
+
+.paper-detail-meta > div {
+    padding: 15px;
+
+    border:
+        1px solid #252525;
+
+    border-radius: 10px;
+
+    background: #090909;
+}
+
+
+.paper-detail-meta span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #707070;
+
+    font-size: 10px;
+}
+
+
+.paper-detail-meta strong {
+    display: block;
+
+    overflow-wrap: anywhere;
+
+    color: #d5d5d5;
+
+    font-size: 12px;
+}
+
+
+.paper-detail-section {
+    padding:
+        30px 0;
+
+    border-top:
+        1px solid #242424;
+}
+
+
+.paper-detail-section > p {
+    max-width: 950px;
+
+    color: #a5a5a5;
+
+    font-size: 15px;
+
+    line-height: 2;
+}
+
+
+.paper-topics {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+
+.paper-topics span {
+    padding:
+        7px 11px;
+
+    border:
+        1px solid #292929;
+
+    border-radius: 20px;
+
+    color: #8c8c8c;
+
+    font-size: 10px;
+
+    background: #090909;
+}
+
+
+.paper-detail-actions {
+    padding-top: 30px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    border-top:
+        1px solid #242424;
+}
+
+
+#savePaperButton {
+    cursor: pointer;
+
+    font-family: inherit;
+
+    color: white;
+}
+
+
+@media (max-width: 800px) {
+
+    .paper-detail-page {
+        padding:
+            55px 0
+            90px;
+    }
+
+
+    .paper-detail-card {
+        padding: 24px;
+    }
+
+
+    .paper-detail-card > h1 {
+        font-size: 34px;
+    }
+
+
+    .paper-detail-meta {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .paper-detail-card {
+        padding: 18px;
+    }
+
+
+    .paper-detail-card > h1 {
+        font-size: 28px;
+    }
+
+
+    .paper-detail-meta {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .paper-detail-actions {
+        flex-direction: column;
+    }
+
+
+    .paper-detail-actions .btn {
+        width: 100%;
+    }
+
+}
+
+/* =========================================================
+   PAPER — SAVED STATE
+========================================================= */
+
+#savePaperButton.is-saved {
+    border-color:
+        rgba(
+            177,
+            18,
+            38,
+            0.45
+        );
+
+    background:
+        rgba(
+            177,
+            18,
+            38,
+            0.08
+        );
+
+    color: #d6a0a7;
+
+    cursor: default;
+
+    opacity: 1;
+}
+
+
+#savePaperButton.is-saved:disabled {
+    opacity: 1;
+}

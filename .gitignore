@@ -1,0 +1,31 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Supabase local information
+supabase/.temp/
+supabase/functions/.env
+supabase/functions/.env.*
+
+# macOS
+.DS_Store
+__MACOSX/
+._*
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# Database exports
+*.dump
+*.backup
+backups/
+
+# Local editor settings
+.vscode/
