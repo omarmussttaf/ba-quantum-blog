@@ -28,21 +28,52 @@ Deno.serve(
       );
     }
 
-    if (
-      request.method !==
-      "POST" &&
-      request.method !==
-      "GET"
-    ) {
-      return jsonResponse(
-        {
-          ok: false,
-          error:
-            "Method not allowed",
-        },
-        405,
-      );
-    }
+    // Only POST requests are allowed.
+if (request.method !== "POST") {
+  return jsonResponse(
+    {
+      ok: false,
+      error: "Method not allowed",
+    },
+    405,
+  );
+}
+
+// BA Embedding Worker Authentication
+const expectedWorkerSecret =
+  Deno.env.get("BA_EMBED_WORKER_SECRET");
+
+const providedWorkerSecret =
+  request.headers.get("x-ba-worker-secret");
+
+// Fail closed if the server secret is missing.
+if (!expectedWorkerSecret) {
+  console.error(
+    "BA_EMBED_WORKER_SECRET is not configured."
+  );
+
+  return jsonResponse(
+    {
+      ok: false,
+      error: "Worker configuration error",
+    },
+    503,
+  );
+}
+
+// Reject requests without the correct secret.
+if (
+  !providedWorkerSecret ||
+  providedWorkerSecret !== expectedWorkerSecret
+) {
+  return jsonResponse(
+    {
+      ok: false,
+      error: "Unauthorized",
+    },
+    401,
+  );
+}
 
     try {
 
