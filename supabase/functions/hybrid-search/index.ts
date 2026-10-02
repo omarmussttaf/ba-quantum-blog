@@ -73,41 +73,29 @@ Deno.serve(async (request) => {
       );
     }
 
-    const headers = {
+        const headers = {
       apikey: serviceRoleKey,
       Authorization: `Bearer ${serviceRoleKey}`,
       "Content-Type": "application/json",
     };
 
-    const [lexicalResponse, semanticResponse] =
-      await Promise.all([
-        fetch(
-          `${supabaseUrl}/functions/v1/research-search`,
-          {
-            method: "POST",
-            headers,
-            body: JSON.stringify({ query }),
-          },
-        ),
-        fetch(
-          `${supabaseUrl}/functions/v1/semantic-search`,
-          {
-            method: "POST",
-            headers,
-            body: JSON.stringify({
-              query,
-              match_count: 20,
-              match_threshold: 0.45,
-            }),
-          },
-        ),
-      ]);
+    // STEP 1: Run lexical search first.
+    // This request enforces BA Search Rate Limiting.
+
+    const lexicalResponse = await fetch(
+      `${supabaseUrl}/functions/v1/research-search`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ query }),
+      },
+    );
 
     const lexicalPayload =
       await safeJson(lexicalResponse);
 
-    const semanticPayload =
-      await safeJson(semanticResponse);
+    // Stop if research-search rejects the request.
+    // HTTP 429 must not trigger semantic-search.
 
     if (!lexicalResponse.ok) {
       return jsonResponse(
@@ -119,6 +107,24 @@ Deno.serve(async (request) => {
         lexicalResponse.status,
       );
     }
+
+    // STEP 2: Run semantic search only after lexical succeeds.
+
+    const semanticResponse = await fetch(
+      `${supabaseUrl}/functions/v1/semantic-search`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          query,
+          match_count: 20,
+          match_threshold: 0.45,
+        }),
+      },
+    );
+
+    const semanticPayload =
+      await safeJson(semanticResponse);
 
     // Semantic search is optional. If it fails, keep the v0.3.9 lexical retrieval and still apply v0.4.0 final reranking.
     if (!semanticResponse.ok) {

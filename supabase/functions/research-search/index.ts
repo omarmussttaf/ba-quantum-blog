@@ -87,6 +87,87 @@ Deno.serve(async (request) => {
       );
     }
 
+        // BA Search Rate Limiting
+    // Reserve one search request before calling providers.
+
+    const supabaseUrl =
+      Deno.env.get("SUPABASE_URL");
+
+    const serviceRoleKey =
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      console.error(
+        "BA Search: missing rate-limit credentials",
+      );
+
+      return jsonResponse(
+        {
+          error: "Search temporarily unavailable.",
+        },
+        503,
+      );
+    }
+
+    let searchAllowed = false;
+
+    try {
+
+      const rateResponse = await fetch(
+        `${supabaseUrl}/rest/v1/rpc/ba_reserve_search_request`,
+        {
+          method: "POST",
+
+          headers: {
+            apikey: serviceRoleKey,
+            Authorization: `Bearer ${serviceRoleKey}`,
+            "Content-Type": "application/json",
+          },
+
+          body: "{}",
+
+          signal: AbortSignal.timeout(4000),
+        },
+      );
+
+      if (!rateResponse.ok) {
+        throw new Error(
+          `Search rate-limit RPC failed: ${rateResponse.status}`,
+        );
+      }
+
+      searchAllowed =
+        (await rateResponse.json()) === true;
+
+    } catch (error) {
+
+      console.error(
+        "BA Search: rate-limit check failed",
+        error instanceof Error ? error.message : "unknown",
+      );
+
+      return jsonResponse(
+        {
+          error: "Search temporarily unavailable.",
+        },
+        503,
+      );
+
+    }
+
+    if (!searchAllowed) {
+
+      return jsonResponse(
+        {
+          error:
+            "Search limit reached. Please try again shortly.",
+
+          code: "SEARCH_RATE_LIMITED",
+        },
+        429,
+      );
+    }
+
     const intent =
       parseResearchIntent(
         query,
@@ -178,10 +259,14 @@ Deno.serve(async (request) => {
           RETURN_LIMIT,
         );
 
+    // Save newly discovered papers to BA memory
+    const persistence = await persistBaPapersBestEffort(scored);
+
     return jsonResponse(
       {
         query,
         intent,
+        persistence,
         count:
           scored.length,
         sources:
@@ -5201,5 +5286,299 @@ function clamp01(
       Number(value) || 0,
     ),
   );
+
+}
+
+
+/* =========================================================
+   BA PAPER MEMORY — Best-Effort Persistence
+
+   Saves newly discovered papers without overwriting
+   existing records or their embeddings.
+========================================================= */
+
+async function persistBaPapersBestEffort(
+  papers: ResearchResult[],
+) {
+
+  const attempted = Math.min(
+    papers.length,
+    24,
+  );
+
+  if (attempted === 0) {
+    return {
+      ok: true,
+      attempted: 0,
+    };
+  }
+
+  try {
+
+    const supabaseUrl =
+      Deno.env.get("SUPABASE_URL");
+
+    const serviceRoleKey =
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!supabaseUrl || !serviceRoleKey) {
+
+      console.warn(
+        "BA Paper Memory: missing server credentials",
+      );
+
+      return {
+        ok: false,
+        attempted,
+        reason: "missing-credentials",
+      };
+
+    }
+
+    const rows = papers
+      .slice(0, 24)
+      .map((item) => {
+
+        const title =
+          String(item.title || "")
+            .trim();
+
+        if (!title) {
+          return null;
+        }
+
+        const doi =
+          normalizeDoi(item.doi);
+
+        const fallbackTitle =
+          titleFingerprint(title);
+
+        const canonicalKey =
+          doi
+            ? `doi:${doi}`
+            : fallbackTitle
+              ? `title:${fallbackTitle}`
+              : null;
+
+        if (!canonicalKey) {
+          return null;
+        }
+
+        const abstract =
+          String(item.abstract || "")
+            .trim();
+
+        return {
+
+          canonical_key: canonicalKey,
+
+          doi,
+
+          openalex_id:
+            item.openAlexId,
+
+          title,
+
+          abstract,
+
+          authors:
+            item.authors,
+
+          publication_year:
+            item.year,
+
+          journal_name:
+            item.sourceName || null,
+
+          document_type:
+            item.documentType || "unknown",
+
+          is_open_access:
+            Boolean(item.isOpenAccess),
+
+          cited_by_count:
+            Number(item.citedByCount || 0),
+
+          source_url:
+            item.url,
+
+          sources:
+            item.sources,
+
+          embedding_content:
+            [title, abstract]
+              .filter(Boolean)
+              .join("\n\n")
+              .slice(0, 5000),
+
+          updated_at:
+            new Date().toISOString(),
+
+        };
+
+      })
+      .filter((row) => row !== null);
+
+    if (rows.length === 0) {
+
+      return {
+        ok: true,
+        attempted: 0,
+      };
+
+    }
+
+        // Reserve the global BA memory write budget first.
+    // If the budget is unavailable, skip persistence safely.
+    let budgetResponse: Response;
+
+    try {
+
+      budgetResponse = await fetch(
+        `${supabaseUrl}/rest/v1/rpc/ba_reserve_memory_write`,
+        {
+          method: "POST",
+
+          headers: {
+            apikey: serviceRoleKey,
+            Authorization: `Bearer ${serviceRoleKey}`,
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            p_paper_count: rows.length,
+          }),
+
+          signal: AbortSignal.timeout(2500),
+        },
+      );
+
+    } catch (error) {
+
+      console.warn(
+        "BA Paper Memory: budget check unavailable",
+        error instanceof Error ? error.name : "unknown",
+      );
+
+      return {
+        ok: false,
+        attempted: 0,
+        reason: "write-budget-unavailable",
+      };
+
+    }
+
+    if (!budgetResponse.ok) {
+
+      console.warn(
+        `BA Paper Memory: budget RPC failed (${budgetResponse.status})`,
+      );
+
+      return {
+        ok: false,
+        attempted: 0,
+        reason: "write-budget-check-failed",
+      };
+
+    }
+
+    const writeAllowed = await budgetResponse.json();
+
+    if (writeAllowed !== true) {
+
+      return {
+        ok: false,
+        attempted: 0,
+        reason: "write-budget-exhausted",
+      };
+
+    }
+
+    const controller =
+      new AbortController();
+
+    const timeout =
+      setTimeout(
+        () => controller.abort(),
+        3500,
+      );
+
+    try {
+
+      const response = await fetch(
+        `${supabaseUrl}/rest/v1/ba_papers?on_conflict=canonical_key`,
+        {
+          method: "POST",
+
+          headers: {
+
+            apikey:
+              serviceRoleKey,
+
+            Authorization:
+              `Bearer ${serviceRoleKey}`,
+
+            "Content-Type":
+              "application/json",
+
+            Prefer:
+              "resolution=ignore-duplicates,return=minimal",
+
+          },
+
+          body:
+            JSON.stringify(rows),
+
+          signal:
+            controller.signal,
+
+        },
+      );
+
+      if (!response.ok) {
+
+        console.warn(
+          `BA Paper Memory: insert failed (${response.status})`,
+        );
+
+        return {
+          ok: false,
+          attempted: rows.length,
+          reason: "database-write-failed",
+        };
+
+      }
+
+      return {
+        ok: true,
+        attempted: rows.length,
+      };
+
+    }
+
+    finally {
+
+      clearTimeout(timeout);
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "BA Paper Memory: unavailable",
+      error instanceof Error
+        ? error.message
+        : "unknown",
+    );
+
+    return {
+      ok: false,
+      attempted,
+      reason: "best-effort-fallback",
+    };
+
+  }
 
 }

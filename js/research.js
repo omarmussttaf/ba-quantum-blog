@@ -328,8 +328,26 @@ async function searchResearch(query) {
 
     }
 
-    catch (error) {
+        catch (error) {
 
+        // Never bypass BA Search Rate Limiting
+        // by switching to the direct OpenAlex fallback.
+        if (
+            error instanceof Error &&
+            error.message ===
+                "تم الوصول إلى الحد المؤقت لطلبات البحث. يرجى المحاولة بعد قليل."
+        ) {
+
+            setStatus(
+                "تم الوصول إلى الحد المؤقت للبحث. يرجى المحاولة بعد قليل.",
+                "Search limit reached. Please try again shortly."
+            );
+
+            return;
+
+        }
+
+        // Preserve OpenAlex fallback for other search failures.
         console.warn(
             "BA: Multi-source search unavailable; falling back to OpenAlex.",
             error
@@ -445,6 +463,18 @@ async function searchThroughEdgeFunction(
 
     }
 
+        // Do not retry when BA Search Rate Limit is reached.
+    // Hybrid Search forwards the HTTP 429 from research-search.
+
+    if (
+        hybridAttempt.error?.context?.status === 429
+    ) {
+
+        throw new Error(
+            "تم الوصول إلى الحد المؤقت لطلبات البحث. يرجى المحاولة بعد قليل."
+        );
+
+    }
 
     console.warn(
         "BA: Hybrid search unavailable; falling back to research-search.",

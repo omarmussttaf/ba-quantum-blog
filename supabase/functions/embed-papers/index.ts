@@ -3,6 +3,25 @@
 // Purpose: generate ONE stored paper embedding per invocation.
 // This keeps semantic work separate from research-search and avoids CPU spikes.
 
+// Type definitions for Supabase Edge Runtime.
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+
+// TypeScript-only definition for the Supabase Edge Runtime global.
+// This does not create or replace Supabase at runtime.
+declare const Supabase: {
+  ai: {
+    Session: new (model: string) => {
+      run(
+        content: string,
+        options: {
+          mean_pool: boolean;
+          normalize: boolean;
+        },
+      ): Promise<ArrayLike<number>>;
+    };
+  };
+};
+
 const EMBEDDING_MODEL =
   "gte-small";
 
@@ -75,6 +94,12 @@ if (
   );
 }
 
+    // Track the active reservation for error recovery.
+    let activeClaim: {
+      id: number;
+      lease_token: string;
+    } | null = null;
+
     try {
 
       const supabaseUrl =
@@ -102,21 +127,26 @@ if (
       }
 
       const paper =
-        await getNextPaper(
-          supabaseUrl,
-          serviceRoleKey,
-        );
-
+  await claimNextPaper(
+    supabaseUrl,
+    serviceRoleKey,
+  );
       if (!paper) {
         return jsonResponse(
           {
             ok: true,
             processed: 0,
             message:
-              "No papers waiting for embeddings.",
+              "No paper available: queue empty or another worker holds the active lease.",
           },
         );
       }
+
+            // Keep the claim accessible to the catch block.
+      activeClaim = {
+        id: paper.id,
+        lease_token: paper.lease_token,
+      };
 
       const content =
         String(
@@ -129,24 +159,9 @@ if (
             7000,
           );
 
-      if (!content) {
-
-        await markSkippedPaper(
-          supabaseUrl,
-          serviceRoleKey,
-          paper.id,
-        );
-
-        return jsonResponse(
-          {
-            ok: true,
-            processed: 0,
-            skipped: 1,
-            paperId:
-              paper.id,
-            reason:
-              "empty-embedding-content",
-          },
+            if (!content) {
+        throw new Error(
+          "Claimed paper has empty embedding content.",
         );
       }
 
@@ -155,6 +170,14 @@ if (
         We generate only ONE embedding per invocation.
         research-search never performs this work.
       */
+            // Measure embedding model performance
+      const inferenceStartedAt = Date.now();
+
+      console.log(
+        "BA EMBED: starting gte-small",
+        paper.id,
+      );
+
       const session =
         new Supabase.ai.Session(
           EMBEDDING_MODEL,
@@ -164,12 +187,15 @@ if (
         await session.run(
           content,
           {
-            mean_pool:
-              true,
-            normalize:
-              true,
+            mean_pool: true,
+            normalize: true,
           },
         );
+
+      console.log(
+        "BA EMBED: inference completed in ms:",
+        Date.now() - inferenceStartedAt,
+      );
 
       const embedding =
         Array.from(
@@ -185,10 +211,12 @@ if (
         );
       }
 
-      await saveEmbedding(
+                  // Complete only if this worker still owns the lease.
+      await completeClaimedEmbedding(
         supabaseUrl,
         serviceRoleKey,
         paper.id,
+        paper.lease_token,
         embedding,
       );
 
@@ -209,12 +237,52 @@ if (
 
     }
 
-    catch (error) {
+        catch (error) {
 
       console.error(
         "embed-papers error:",
         error,
       );
+
+      // Attempt to release the active reservation.
+      if (activeClaim) {
+
+        const supabaseUrl =
+          Deno.env.get("SUPABASE_URL");
+
+        const serviceRoleKey =
+          Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+        if (supabaseUrl && serviceRoleKey) {
+
+          try {
+
+            const released =
+              await releaseEmbeddingClaim(
+                supabaseUrl,
+                serviceRoleKey,
+                activeClaim.id,
+                activeClaim.lease_token,
+              );
+
+            console.log(
+              "BA EMBED: claim released:",
+              released,
+            );
+
+          } catch (releaseError) {
+
+            // Preserve the original processing error.
+            console.error(
+              "BA EMBED: claim release failed:",
+              releaseError,
+            );
+
+          }
+
+        }
+
+      }
 
       return jsonResponse(
         {
@@ -232,196 +300,175 @@ if (
   },
 );
 
-
-async function getNextPaper(
+// Atomically claim one paper through PostgreSQL.
+// Only service_role can execute this RPC.
+async function claimNextPaper(
   supabaseUrl: string,
   serviceRoleKey: string,
 ) {
 
-  const url =
-    new URL(
-      `${supabaseUrl}/rest/v1/ba_papers`,
-    );
-
-  url.searchParams.set(
-    "select",
-    "id,title,embedding_content",
-  );
-
-  url.searchParams.set(
-    "embedding",
-    "is.null",
-  );
-
-  url.searchParams.set(
-    "embedding_content",
-    "not.is.null",
-  );
-
-  url.searchParams.set(
-    "order",
-    "id.asc",
-  );
-
-  url.searchParams.set(
-    "limit",
-    "1",
-  );
-
-  const response =
-    await fetch(
-      url.toString(),
-      {
-        headers:
-          serverHeaders(
-            serviceRoleKey,
-          ),
-      },
-    );
-
-  if (!response.ok) {
-
-    const body =
-      await response.text();
-
-    throw new Error(
-      `Unable to read ba_papers (${response.status}): ${body.slice(0, 500)}`,
-    );
-
-  }
-
-  const rows =
-    await response.json();
-
-  if (
-    !Array.isArray(
-      rows,
-    ) ||
-    rows.length === 0
-  ) {
-    return null;
-  }
-
-  return rows[0];
-
-}
-
-
-async function saveEmbedding(
-  supabaseUrl: string,
-  serviceRoleKey: string,
-  paperId: number,
-  embedding: number[],
-) {
-
-  const url =
-    new URL(
-      `${supabaseUrl}/rest/v1/ba_papers`,
-    );
-
-  url.searchParams.set(
-    "id",
-    `eq.${paperId}`,
-  );
-
-  const response =
-    await fetch(
-      url.toString(),
-      {
-        method:
-          "PATCH",
-
-        headers: {
-          ...serverHeaders(
-            serviceRoleKey,
-          ),
-          "Content-Type":
-            "application/json",
-          Prefer:
-            "return=minimal",
-        },
-
-        body:
-          JSON.stringify(
-            {
-              embedding,
-              embedding_model:
-                EMBEDDING_MODEL,
-              embedding_updated_at:
-                new Date()
-                  .toISOString(),
-              updated_at:
-                new Date()
-                  .toISOString(),
-            },
-          ),
-      },
-    );
-
-  if (!response.ok) {
-
-    const body =
-      await response.text();
-
-    throw new Error(
-      `Unable to save embedding (${response.status}): ${body.slice(0, 500)}`,
-    );
-
-  }
-
-}
-
-
-async function markSkippedPaper(
-  supabaseUrl: string,
-  serviceRoleKey: string,
-  paperId: number,
-) {
-
-  const url =
-    new URL(
-      `${supabaseUrl}/rest/v1/ba_papers`,
-    );
-
-  url.searchParams.set(
-    "id",
-    `eq.${paperId}`,
-  );
-
-  await fetch(
-    url.toString(),
+  const response = await fetch(
+    `${supabaseUrl}/rest/v1/rpc/ba_claim_next_embedding`,
     {
-      method:
-        "PATCH",
+      method: "POST",
 
       headers: {
-        ...serverHeaders(
-          serviceRoleKey,
-        ),
-        "Content-Type":
-          "application/json",
-        Prefer:
-          "return=minimal",
+        ...serverHeaders(serviceRoleKey),
+        "Content-Type": "application/json",
       },
 
-      body:
-        JSON.stringify(
-          {
-            embedding_model:
-              "skipped-empty",
-            embedding_updated_at:
-              new Date()
-                .toISOString(),
-            updated_at:
-              new Date()
-                .toISOString(),
-          },
-        ),
+      body: "{}",
     },
   );
 
+  if (!response.ok) {
+    const body = await response.text();
+
+    throw new Error(
+      `Unable to claim paper (${response.status}): ${body.slice(0, 500)}`,
+    );
+  }
+
+  const rows = await response.json();
+
+  if (!Array.isArray(rows)) {
+    throw new Error(
+      "Invalid embedding claim response.",
+    );
+  }
+
+  if (rows.length === 0) {
+    return null;
+  }
+
+  if (rows.length !== 1) {
+    throw new Error(
+      "Expected exactly one embedding claim.",
+    );
+  }
+
+  const row = rows[0];
+
+  if (
+    typeof row.paper_id !== "number" ||
+    typeof row.lease_token !== "string"
+  ) {
+    throw new Error(
+      "Embedding claim is missing its ID or lease token.",
+    );
+  }
+
+  return {
+    id: row.paper_id,
+    title: row.paper_title,
+    embedding_content: row.paper_content,
+    lease_token: row.lease_token,
+  };
+
 }
 
+// Save an embedding only when the worker owns a valid claim.
+async function completeClaimedEmbedding(
+  supabaseUrl: string,
+  serviceRoleKey: string,
+  paperId: number,
+  leaseToken: string,
+  embedding: number[],
+) {
+
+  if (
+    embedding.length !== 384 ||
+    !embedding.every(Number.isFinite)
+  ) {
+    throw new Error(
+      "Invalid embedding: expected 384 finite dimensions.",
+    );
+  }
+
+  const response = await fetch(
+    `${supabaseUrl}/rest/v1/rpc/ba_complete_embedding`,
+    {
+      method: "POST",
+
+      headers: {
+        ...serverHeaders(serviceRoleKey),
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        p_paper_id: paperId,
+        p_lease_token: leaseToken,
+        p_embedding: embedding,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    const body = await response.text();
+
+    throw new Error(
+      `Unable to complete embedding (${response.status}): ${
+        body.slice(0, 500)
+      }`,
+    );
+  }
+
+  const completed = await response.json();
+
+  if (completed !== true) {
+    throw new Error(
+      "Embedding was not saved: claim expired or became invalid.",
+    );
+  }
+
+}
+
+// Release a paper reservation if processing fails.
+async function releaseEmbeddingClaim(
+  supabaseUrl: string,
+  serviceRoleKey: string,
+  paperId: number,
+  leaseToken: string,
+): Promise<boolean> {
+
+  const response = await fetch(
+    `${supabaseUrl}/rest/v1/rpc/ba_release_embedding_claim`,
+    {
+      method: "POST",
+
+      headers: {
+        ...serverHeaders(serviceRoleKey),
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        p_paper_id: paperId,
+        p_lease_token: leaseToken,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    const body = await response.text();
+
+    throw new Error(
+      `Unable to release embedding claim (${response.status}): ${
+        body.slice(0, 500)
+      }`,
+    );
+  }
+
+  const released = await response.json();
+
+  if (typeof released !== "boolean") {
+    throw new Error(
+      "Invalid embedding claim release response.",
+    );
+  }
+
+  return released;
+
+}
 
 function serverHeaders(
   serviceRoleKey: string,
