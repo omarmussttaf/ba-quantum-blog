@@ -15,6 +15,8 @@ const MODEL =
 
 Deno.serve(async (req) => {
 
+    // Handle CORS preflight requests.
+
   if (req.method === "OPTIONS") {
     return new Response(
       "ok",
@@ -24,6 +26,20 @@ Deno.serve(async (req) => {
     );
   }
 
+  // BA Security: Scientific Query is disabled by default.
+  // Do not enable before authorization and rate limiting are implemented.
+
+  if (
+    Deno.env.get("BA_ENABLE_SCIENTIFIC_QUERY") !== "true"
+  ) {
+    return jsonResponse(
+      {
+        ok: false,
+        error: "Scientific Query is temporarily disabled.",
+      },
+      503
+    );
+  }
 
   try {
 

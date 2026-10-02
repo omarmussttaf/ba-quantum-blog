@@ -108,26 +108,69 @@ Deno.serve(async (request) => {
       );
     }
 
-    // STEP 2: Run semantic search only after lexical succeeds.
+        // STEP 2: Optional live semantic search.
+    // Disabled by default until AI inference performance is resolved.
 
-    const semanticResponse = await fetch(
-      `${supabaseUrl}/functions/v1/semantic-search`,
-      {
-        method: "POST",
-        headers,
-        body: JSON.stringify({
-          query,
-          match_count: 20,
-          match_threshold: 0.45,
-        }),
-      },
-    );
+    const liveSemanticEnabled =
+      Deno.env.get("BA_ENABLE_LIVE_SEMANTIC") === "true";
 
-    const semanticPayload =
-      await safeJson(semanticResponse);
+    let semanticResponse: Response | null = null;
+    let semanticPayload: any = null;
+
+    if (liveSemanticEnabled) {
+
+      // BA Security: Internal authorization.
+
+      const semanticInternalSecret = Deno.env.get(
+        "BA_SEMANTIC_INTERNAL_SECRET",
+      );
+
+      if (!semanticInternalSecret) {
+        console.error(
+          "BA Hybrid: Semantic secret is not configured.",
+        );
+
+        return jsonResponse(
+          {
+            ok: false,
+            error: "Semantic search is temporarily unavailable.",
+          },
+          503,
+        );
+      }
+
+      // BA Reliability: Limit how long Hybrid waits for AI.
+
+      try {
+        semanticResponse = await fetch(
+          `${supabaseUrl}/functions/v1/semantic-search`,
+          {
+            method: "POST",
+            headers: {
+              ...headers,
+              "x-ba-semantic-secret": semanticInternalSecret,
+            },
+            body: JSON.stringify({
+              query,
+              match_count: 20,
+              match_threshold: 0.45,
+            }),
+            signal: AbortSignal.timeout(12_000),
+          },
+        );
+
+        semanticPayload = await safeJson(semanticResponse);
+
+      } catch (error) {
+        console.warn(
+          "BA Hybrid: Semantic Search failed or timed out.",
+          error instanceof Error ? error.name : "Unknown error",
+        );
+      }
+    }
 
     // Semantic search is optional. If it fails, keep the v0.3.9 lexical retrieval and still apply v0.4.0 final reranking.
-    if (!semanticResponse.ok) {
+    if (!semanticResponse?.ok || semanticPayload?.ok !== true) {
       return jsonResponse({
         ok: true,
         mode: "lexical-fallback",

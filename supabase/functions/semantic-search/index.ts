@@ -1,6 +1,23 @@
 // BA Search v0.4 — Step 5
 // Edge Function: semantic-search
 
+// Type declaration for the Supabase Edge Runtime AI global.
+// This declaration does not create or replace the runtime object.
+
+declare const Supabase: {
+  ai: {
+    Session: new (model: string) => {
+      run(
+        input: string,
+        options: {
+          mean_pool: boolean;
+          normalize: boolean;
+        },
+      ): Promise<ArrayLike<number>>;
+    };
+  };
+};
+
 const EMBEDDING_MODEL = "gte-small";
 const DEFAULT_MATCH_COUNT = 12;
 const DEFAULT_THRESHOLD = 0.45;
@@ -20,6 +37,38 @@ Deno.serve(async (request) => {
     return jsonResponse({ ok: false, error: "Method not allowed" }, 405);
   }
 
+    // BA Security: Semantic Search is an internal service.
+  // Reject unauthorized requests before running the AI model.
+
+  const internalSecret = Deno.env.get(
+    "BA_SEMANTIC_INTERNAL_SECRET",
+  );
+
+  if (!internalSecret) {
+    console.error("BA Semantic: Internal secret is not configured.");
+
+    return jsonResponse(
+      {
+        ok: false,
+        error: "Semantic search is temporarily unavailable.",
+      },
+      503,
+    );
+  }
+
+  const providedSecret = request.headers.get(
+    "x-ba-semantic-secret",
+  );
+
+  if (!providedSecret || providedSecret !== internalSecret) {
+    return jsonResponse(
+      {
+        ok: false,
+        error: "Unauthorized semantic search request.",
+      },
+      401,
+    );
+  }
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
