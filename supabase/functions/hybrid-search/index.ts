@@ -414,6 +414,7 @@ Deno.serve(async (request) => {
         baScore: hybridScore,
         hybridOrigin: "semantic-memory",
       });
+      usedSemanticKeys.add(key);
     }
 
     const results =
