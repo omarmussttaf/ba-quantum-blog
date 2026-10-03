@@ -73,11 +73,24 @@ Deno.serve(async (request) => {
       );
     }
 
-        const headers = {
+    const headers: Record<string, string> = {
       apikey: serviceRoleKey,
       Authorization: `Bearer ${serviceRoleKey}`,
       "Content-Type": "application/json",
     };
+
+    // Preserve the original visitor authorization separately.
+    // Research must verify the token through Supabase Auth.
+    // Never treat this header as a verified user identity.
+
+    const visitorAuthorization =
+      request.headers.get("authorization");
+
+    if (visitorAuthorization) {
+      headers["x-ba-visitor-authorization"] =
+        visitorAuthorization;
+    }
+
 
     // STEP 1: Run lexical search first.
     // This request enforces BA Search Rate Limiting.
@@ -108,7 +121,7 @@ Deno.serve(async (request) => {
       );
     }
 
-        // STEP 2: Optional live semantic search.
+    // STEP 2: Optional live semantic search.
     // Disabled by default until AI inference performance is resolved.
 
     const liveSemanticEnabled =
@@ -147,7 +160,9 @@ Deno.serve(async (request) => {
           {
             method: "POST",
             headers: {
-              ...headers,
+              apikey: serviceRoleKey,
+              Authorization: `Bearer ${serviceRoleKey}`,
+              "Content-Type": "application/json",
               "x-ba-semantic-secret": semanticInternalSecret,
             },
             body: JSON.stringify({

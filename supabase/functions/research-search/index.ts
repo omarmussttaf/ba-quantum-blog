@@ -45,6 +45,63 @@ type ResearchResult = {
   baScore: number;
 };
 
+type VisitorCredential =
+  | { kind: "guest" }
+  | { kind: "user-token"; token: string }
+  | { kind: "invalid" };
+
+
+function classifyVisitorCredential(
+  authorization: string | null,
+  anonKey: string | null,
+  legacyAnonKey: string | null,
+): VisitorCredential {
+
+  if (!authorization) {
+    return { kind: "guest" };
+  }
+
+  const match = authorization.trim().match(
+    /^Bearer\s+(\S+)$/i,
+  );
+
+  if (!match) {
+    return { kind: "invalid" };
+  }
+
+  const token = match[1];
+
+  // Recognize only explicitly configured public keys.
+  // JWT contents alone must never establish identity.
+  if (
+    (anonKey && token === anonKey) ||
+    (legacyAnonKey && token === legacyAnonKey)
+  ) {
+    return { kind: "guest" };
+  }
+
+  // Modern public project key, not a user session.
+  if (token.startsWith("sb_publishable_")) {
+    return { kind: "guest" };
+  }
+
+  // Secret API keys must never represent visitor identity.
+  if (token.startsWith("sb_secret_")) {
+    return { kind: "invalid" };
+  }
+
+  // A candidate user JWT still requires verification
+  // through Supabase Auth.
+  if (token.split(".").length !== 3) {
+    return { kind: "invalid" };
+  }
+
+  return {
+    kind: "user-token",
+    token,
+  };
+}
+
 Deno.serve(async (request) => {
 
   if (request.method === "OPTIONS") {
@@ -109,12 +166,141 @@ Deno.serve(async (request) => {
       );
     }
 
+
+    // Distinguish an internal Hybrid request from
+    // a direct browser request.
+
+    const incomingAuthorization =
+      request.headers.get("authorization");
+
+    const isInternalHybridRequest =
+      incomingAuthorization === `Bearer ${serviceRoleKey}`;
+
+    // Direct callers must never supply the internal
+    // visitor-authorization forwarding header.
+    if (
+      !isInternalHybridRequest &&
+      request.headers.has("x-ba-visitor-authorization")
+    ) {
+      return jsonResponse(
+        { error: "Forbidden internal header." },
+        403,
+      );
+    }
+
+    // This is an unverified credential, NOT a user identity.
+    // It will be validated through Supabase Auth next.
+    const visitorAuthorization =
+      isInternalHybridRequest
+        ? request.headers.get("x-ba-visitor-authorization")
+        : incomingAuthorization;
+
+
+    // Classify the original visitor credential.
+    // Classification does not establish user identity.
+
+
+const visitorCredential =
+  classifyVisitorCredential(
+    visitorAuthorization,
+    Deno.env.get("SUPABASE_ANON_KEY") ?? null,
+    Deno.env.get("BA_LEGACY_ANON_KEY") ?? null,
+  );
+
+
+
+    // Reject malformed credentials instead of silently
+    // treating them as guest requests.
+
+    if (visitorCredential.kind === "invalid") {
+      return jsonResponse(
+        {
+          error: "Invalid visitor credentials.",
+        },
+        401,
+      );
+    }
+
+
+    // Verify user identity server-side.
+    // Never extract user_id from an unverified JWT.
+
+    let verifiedVisitorUserId: string | null = null;
+
+    if (visitorCredential.kind === "user-token") {
+
+      let authResponse: Response;
+
+      try {
+        authResponse = await fetch(
+          `${supabaseUrl}/auth/v1/user`,
+          {
+            method: "GET",
+            headers: {
+              apikey: serviceRoleKey,
+              Authorization:
+                `Bearer ${visitorCredential.token}`,
+            },
+            signal: AbortSignal.timeout(4000),
+          },
+        );
+      } catch {
+        // An unavailable Auth service must not turn
+        // a presented user token into a guest request.
+        return jsonResponse(
+          { error: "Authentication temporarily unavailable." },
+          503,
+        );
+      }
+
+      if (
+        authResponse.status === 401 ||
+        authResponse.status === 403
+      ) {
+        return jsonResponse(
+          { error: "Invalid or expired user session." },
+          401,
+        );
+      }
+
+      if (!authResponse.ok) {
+        return jsonResponse(
+          { error: "Authentication temporarily unavailable." },
+          503,
+        );
+      }
+
+      let verifiedUser: { id?: unknown };
+
+      try {
+        verifiedUser = await authResponse.json();
+      } catch {
+        return jsonResponse(
+          { error: "Invalid authentication response." },
+          503,
+        );
+      }
+
+      if (
+        typeof verifiedUser?.id !== "string" ||
+        !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+          .test(verifiedUser.id)
+      ) {
+        return jsonResponse(
+          { error: "Invalid authentication response." },
+          503,
+        );
+      }
+
+      verifiedVisitorUserId = verifiedUser.id;
+    }
+
     let searchAllowed = false;
 
     try {
 
       const rateResponse = await fetch(
-        `${supabaseUrl}/rest/v1/rpc/ba_reserve_search_request`,
+        `${supabaseUrl}/rest/v1/rpc/ba_reserve_search_request_v2`,
         {
           method: "POST",
 
@@ -124,7 +310,9 @@ Deno.serve(async (request) => {
             "Content-Type": "application/json",
           },
 
-          body: "{}",
+        body: JSON.stringify({
+          p_user_id: verifiedVisitorUserId,
+        }),
 
           signal: AbortSignal.timeout(4000),
         },
