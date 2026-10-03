@@ -1,4 +1,5 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import "jsr:@supabase/functions-js@^2/edge-runtime.d.ts";
+
 
 // BA Search v0.3.9 — Concept Group Coverage
 
@@ -43,6 +44,95 @@ type ResearchResult = {
   metadataScore: number;
   agreementScore: number;
   baScore: number;
+};
+
+// Provider response shapes used by the BA normalization layer.
+// These describe accessed fields; they do not alter runtime payloads.
+type OpenAlexWork = {
+  id?: string | null;
+  doi?: string | null;
+  title?: string | null;
+  display_name?: string | null;
+  publication_year?: number | null;
+  authorships?: Array<{
+    author?: { display_name?: string };
+  }> | null;
+  primary_location?: {
+    source?: { display_name?: string | null } | null;
+    landing_page_url?: string | null;
+    pdf_url?: string | null;
+  } | null;
+  open_access?: { is_oa?: boolean | null } | null;
+  cited_by_count?: number | null;
+  type?: string | null;
+};
+
+type CrossrefDate = {
+  "date-parts"?: Array<Array<number | string | null>> | null;
+};
+
+type CrossrefWork = {
+  DOI?: string | null;
+  URL?: string | null;
+  title?: string[] | null;
+  author?: Array<{
+    given?: string | null;
+    family?: string | null;
+  }> | null;
+  "container-title"?: string[] | null;
+  type?: string | null;
+  "is-referenced-by-count"?: number | null;
+  abstract?: string | null;
+  published?: CrossrefDate | null;
+  "published-print"?: CrossrefDate | null;
+  "published-online"?: CrossrefDate | null;
+  issued?: CrossrefDate | null;
+  created?: CrossrefDate | null;
+  license?: unknown[] | null;
+  link?: Array<{ URL?: string | null }> | null;
+};
+
+type EuropePmcWork = {
+  doi?: string | null;
+  pmcid?: string | null;
+  pmid?: string | null;
+  title?: string | null;
+  pubYear?: string | number | null;
+  journalTitle?: string | null;
+  journalInfo?: {
+    journal?: { title?: string | null } | null;
+  } | null;
+  pubType?: string | null;
+  pubTypeList?: { pubType?: string[] | null } | null;
+  citedByCount?: number | null;
+  isOpenAccess?: string | boolean | null;
+  abstractText?: string | null;
+  authorList?: {
+    author?: Array<{
+      fullName?: string | null;
+      collectiveName?: string | null;
+      firstName?: string | null;
+      lastName?: string | null;
+    }> | null;
+  } | null;
+  authorString?: string | null;
+};
+
+type DoajBib = {
+  identifier?: Array<{ type?: string | null; id?: string | null }> | null;
+  author?: Array<{ name?: string | null }> | null;
+  journal?: { title?: string | null } | null;
+  link?: Array<{ url?: string | null }> | null;
+  abstract?: string | null;
+  title?: string | null;
+  year?: string | number | null;
+  type?: string | null;
+  document_type?: string | null;
+};
+
+type DoajRecord = {
+  id?: string | null;
+  bibjson?: DoajBib | null;
 };
 
 type VisitorCredential =
@@ -598,23 +688,30 @@ async function searchOpenAlex(
 
   return rows.map(
     (
-      work: any,
+      work: OpenAlexWork,
       index: number,
     ) => {
-
       const authors =
         Array.isArray(
           work.authorships,
         )
           ? work.authorships
             .map(
-              (item: any) =>
+              (item: {
+                author?: {
+                  display_name?: string;
+                };
+              }) =>
                 item
                   ?.author
                   ?.display_name,
             )
-            .filter(Boolean)
+            .filter(
+              (name): name is string =>
+                Boolean(name),
+            )
           : [];
+
 
       return createNormalizedResult(
         {
@@ -758,7 +855,7 @@ async function searchCrossref(
 
   return rows.map(
     (
-      work: any,
+      work: CrossrefWork,
       index: number,
     ) => {
 
@@ -775,7 +872,7 @@ async function searchCrossref(
         )
           ? work.author
             .map(
-              (author: any) =>
+              (author: NonNullable<CrossrefWork["author"]>[number]) =>
                 [
                   author?.given,
                   author?.family,
@@ -928,7 +1025,7 @@ async function searchEuropePmc(
 
   return rows.map(
     (
-      work: any,
+      work: EuropePmcWork,
       index: number,
     ) => {
 
@@ -1279,7 +1376,7 @@ async function searchDoaj(
 
   return rows.map(
     (
-      record: any,
+      record: DoajRecord,
       index: number,
     ) => {
 
@@ -1296,7 +1393,7 @@ async function searchDoaj(
 
       const doiIdentifier =
         identifiers.find(
-          (item: any) =>
+          (item: NonNullable<DoajBib["identifier"]>[number]) =>
             String(
               item?.type ||
               "",
@@ -1316,7 +1413,7 @@ async function searchDoaj(
         )
           ? bib.author
             .map(
-              (author: any) =>
+              (author: NonNullable<DoajBib["author"]>[number]) =>
                 author?.name ||
                 "",
             )
@@ -1338,7 +1435,7 @@ async function searchDoaj(
 
       const fulltextLink =
         links.find(
-          (item: any) =>
+          (item: NonNullable<DoajBib["link"]>[number]) =>
             typeof item?.url ===
               "string" &&
             item.url.startsWith(
@@ -4572,7 +4669,7 @@ function normalizeDocumentType(
 
 
 function inferEuropePmcDocumentType(
-  work: any,
+  work: EuropePmcWork,
 ) {
 
   const publicationTypes =
@@ -4596,7 +4693,7 @@ function inferEuropePmcDocumentType(
 
 
 function inferDoajDocumentType(
-  bib: any,
+  bib: DoajBib,
 ) {
 
   const type =
@@ -5340,7 +5437,7 @@ function stripMarkup(
 }
 
 function getCrossrefYear(
-  work: any,
+  work: CrossrefWork,
 ) {
 
   const dateCandidates =
@@ -5378,7 +5475,7 @@ function getCrossrefYear(
 }
 
 function inferCrossrefOpenAccess(
-  work: any,
+  work: CrossrefWork,
 ) {
 
   if (
@@ -5395,7 +5492,7 @@ function inferCrossrefOpenAccess(
       work?.link,
     ) &&
     work.link.some(
-      (item: any) =>
+      (item: NonNullable<CrossrefWork["link"]>[number]) =>
         typeof item?.URL === "string" &&
         item.URL.startsWith("http"),
     )
@@ -5408,7 +5505,7 @@ function inferCrossrefOpenAccess(
 }
 
 function parseEuropePmcAuthors(
-  work: any,
+  work: EuropePmcWork,
 ) {
 
   const authorList =
@@ -5425,7 +5522,7 @@ function parseEuropePmcAuthors(
     const names =
       authorList
         .map(
-          (author: any) =>
+          (author: NonNullable<NonNullable<EuropePmcWork["authorList"]>["author"]>[number]) =>
             author.fullName ||
             author
               .collectiveName ||
