@@ -1,5 +1,5 @@
 /* =========================================================
-   BA PROJECT
+   BA SCIENCE
    File: research.js
    Version: BA Search v0.2
    Purpose:
@@ -100,8 +100,8 @@ function changeLanguage(language) {
     }
     document.title =
         safeLanguage === "ar"
-            ? "BA | البحث العلمي"
-            : "BA | Research";
+            ? "BA Science | البحث العلمي"
+            : "BA Science | Research";
     currentLanguage =
         safeLanguage;
     localStorage.setItem(

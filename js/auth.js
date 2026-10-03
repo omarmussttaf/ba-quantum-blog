@@ -1,5 +1,5 @@
 /* =========================================================
-   BA PROJECT
+   BA SCIENCE
    File: auth.js
 
    Purpose:
@@ -93,6 +93,25 @@ function changeLanguage(language) {
 
     }
 
+
+
+    /* BA Science — localized page title */
+
+    const isSignupPage =
+        Boolean(document.getElementById("signupForm"));
+
+    document.title =
+        isSignupPage
+            ? (
+                safeLanguage === "ar"
+                    ? "BA Science | إنشاء حساب"
+                    : "BA Science | Sign Up"
+            )
+            : (
+                safeLanguage === "ar"
+                    ? "BA Science | تسجيل الدخول"
+                    : "BA Science | Sign In"
+            );
 
     currentLanguage =
         safeLanguage;

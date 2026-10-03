@@ -1,3 +1,4 @@
+project_id = "ba-quantum-blog-final-audited"
 
 [functions.embed-papers]
 enabled = true

@@ -1,5 +1,5 @@
 /* =========================================================
-   BA PROJECT
+   BA SCIENCE
    File: main.js
 
    Purpose:
@@ -352,8 +352,8 @@ function changeLanguage(language) {
 
     document.title =
         safeLanguage === "ar"
-            ? "BA | العلم والبحث"
-            : "BA | Science & Research";
+            ? "BA Science | العلم والبحث"
+            : "BA Science | Science & Research";
 
 
 

@@ -1,5 +1,5 @@
 /* =========================================================
-   BA PROJECT
+   BA SCIENCE
    File: paper.js
 
    Purpose:
@@ -125,8 +125,8 @@ function changeLanguage(language) {
 
     document.title =
         safeLanguage === "ar"
-            ? "BA | تفاصيل البحث"
-            : "BA | Paper Details";
+            ? "BA Science | تفاصيل البحث"
+            : "BA Science | Paper Details";
 
 
     currentLanguage =

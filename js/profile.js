@@ -1,5 +1,5 @@
 /* =========================================================
-   BA PROJECT
+   BA SCIENCE
    File: profile.js
 
    Purpose:
@@ -113,6 +113,14 @@ function changeLanguage(language) {
                 : "AR";
 
     }
+
+
+    /* BA Science — localized page title */
+
+    document.title =
+        safeLanguage === "ar"
+            ? "BA Science | الملف العلمي"
+            : "BA Science | Scientific Profile";
 
 
     currentLanguage =

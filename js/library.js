@@ -1,5 +1,5 @@
 /* =========================================================
-   BA PROJECT
+   BA SCIENCE
    File: library.js
 
    Purpose:
@@ -153,8 +153,8 @@ function changeLanguage(language) {
 
     document.title =
         safeLanguage === "ar"
-            ? "BA | المكتبة العلمية"
-            : "BA | Scientific Library";
+            ? "BA Science | المكتبة العلمية"
+            : "BA Science | Scientific Library";
 
 
     currentLanguage =
